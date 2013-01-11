@@ -1,6 +1,16 @@
 package Data::Perl::Number;
 
+BEGIN {
+  require Exporter;
+  our @ISA = qw(Exporter);
+  our @EXPORT = qw(counter);
+}
+
+use strictures 1;
+
 sub new { my $cl = shift; bless(\$_[0]), $cl }
+
+sub number { Data::Perl::Number->new(shift||0) }
 
 sub add { $$_[0] = $$_[0] + $_[1] }
 

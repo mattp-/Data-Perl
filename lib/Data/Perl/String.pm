@@ -1,6 +1,16 @@
 package Data::Perl::String;
 
+BEGIN {
+  require Exporter;
+  our @ISA = qw(Exporter);
+  our @EXPORT = qw(string);
+}
+
+use strictures 1;
+
 sub new { my $cl = shift; bless(\$_[0]), $cl }
+
+sub string { Data::Perl::String->new(shift||'') }
 
 sub inc { $$_[0] = $$_[0]++ }
 

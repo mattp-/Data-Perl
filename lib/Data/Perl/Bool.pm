@@ -1,6 +1,16 @@
 package Data::Perl::Bool;
 
+BEGIN {
+  require Exporter;
+  our @ISA = qw(Exporter);
+  our @EXPORT = qw(bool);
+}
+
+use strictures 1;
+
 sub new { my $cl = shift; bless(\(!!$_[0])), $cl }
+
+sub bool { Data::Perl::Bool->new(shift||0) }
 
 sub set { $$_[0] = !!$_[1] }
 
