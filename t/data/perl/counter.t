@@ -12,7 +12,6 @@ is $$c, 5, 'nondefault set works';
 # inc
 $c->inc;
 is $$c, 6, 'inc 1 works';
-p $c;
 
 $c->inc(3);
 is $$c, 9, 'inc n works';
