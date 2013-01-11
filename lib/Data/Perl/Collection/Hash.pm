@@ -2,11 +2,13 @@ package Data::Perl::Collection::Hash;
 
 use Scalar::Util qw/blessed/;
 
-require Exporter;
+BEGIN {
+  require Exporter;
+  our @ISA = qw(Exporter);
+  our @EXPORT = qw(hash);
+}
 
-BEGIN { @ISA = qw(Exporter) }
-
-@EXPORT = qw(hash);
+use strictures 1;
 
 sub new { my $cl = shift; bless({ @_ }, $cl) }
 
@@ -34,15 +36,15 @@ sub defined { defined $_[0]->{$_[1]} }
 
 sub values { values %{$_[0]} }
 
-sub kv { map { [ $_, $_[0]->{$_} ] } keys %{$_[0]} }
+sub kv { map { [ $_, $_[0]->{$_} ] } CORE::keys %{$_[0]} }
 
-sub elements { map { $_, $_[0]->{$_} } keys %{$_[0]} }
+sub elements { map { $_, $_[0]->{$_} } CORE::keys %{$_[0]} }
 
 sub clear { %{$_[0]} = () }
 
-sub count { scalar keys %{$_[0]} }
+sub count { scalar CORE::keys %{$_[0]} }
 
-sub is_empty { scalar keys %{$_[0]} ? 0 : 1 }
+sub is_empty { scalar CORE::keys %{$_[0]} ? 0 : 1 }
 
 sub accessor {
   if (@_ == 2) {

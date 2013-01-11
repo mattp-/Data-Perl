@@ -4,11 +4,13 @@ use List::Util;
 use List::MoreUtils;
 use Scalar::Util qw/blessed/;
 
-require Exporter;
+BEGIN {
+  require Exporter;
+  our @ISA = qw(Exporter);
+  our @EXPORT = qw(array);
+}
 
-BEGIN { @ISA = qw(Exporter) }
-
-@EXPORT = qw(array);
+use strictures 1;
 
 sub new { my $cl = shift; bless([ @_ ], $cl) }
 
@@ -60,9 +62,9 @@ sub join { join $_[1], @{$_[0]} }
 
 sub set { $_[0]->[ $_[1] ] = $_[2] }
 
-sub delete { splice @{$_[0]}, $_[1], 1 }
+sub delete { CORE::splice @{$_[0]}, $_[1], 1 }
 
-sub insert { splice @{$_[0]}, $_[1], 0, $_[2] }
+sub insert { CORE::splice @{$_[0]}, $_[1], 0, $_[2] }
 
 sub accessor {
   if (@_ == 2) {
@@ -74,7 +76,7 @@ sub accessor {
 }
 
 sub natatime {
-  my $iter = List::MoreUtils::natatime($_[1], @{@_[0]});
+  my $iter = List::MoreUtils::natatime($_[1], @{$_[0]});
 
   if ($_[2]) {
     while (my @vals = $iter->()) {
