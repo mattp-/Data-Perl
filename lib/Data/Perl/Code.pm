@@ -7,6 +7,6 @@ sub new { my $cl = shift; bless $_[0], $cl }
 sub execute { $_[0]->(@_[1..$#_]) }
 
 #sub execute_method { $_[0]->($_[0], @_[1..$#_]) }
-sub execute_method { ... }
+sub execute_method { die 'This remains unimplemented for now.' }
 
 1;
