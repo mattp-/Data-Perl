@@ -133,4 +133,17 @@ Returns a Data::Perl::Code object initialized with the optionally passed in scal
 
 =back
 
+=head1 THANKS
+
+Much thanks to the L<Moose> team for their work with native traits, for which
+much of this work is based.
+
+=head1 SEE ALSO
+
+=over 4
+
+=item * L<MooX::HandlesVia>
+
+=back
+
 =cut
