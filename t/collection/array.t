@@ -1,5 +1,5 @@
 use Test::More;
-use Data::Perl::Collection::Array;
+use Data::Perl;
 use Scalar::Util qw/refaddr/;
 
 # thanks to Mojo::Collection for skeleton test

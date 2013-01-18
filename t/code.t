@@ -1,5 +1,5 @@
 use Test::More;
-use Data::Perl::Code;
+use Data::Perl;
 use strict;
 use Scalar::Util qw/reftype/;
 

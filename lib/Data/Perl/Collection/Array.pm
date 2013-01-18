@@ -4,17 +4,9 @@ use List::Util;
 use List::MoreUtils;
 use Scalar::Util qw/blessed/;
 
-BEGIN {
-  require Exporter;
-  our @ISA = qw(Exporter);
-  our @EXPORT = qw(array);
-}
-
 use strictures 1;
 
 sub new { my $cl = shift; bless([ @_ ], $cl) }
-
-sub array { Data::Perl::Collection::Array->new(@_) }
 
 sub count { scalar @{$_[0]} }
 

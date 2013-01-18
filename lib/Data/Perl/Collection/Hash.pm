@@ -2,17 +2,9 @@ package Data::Perl::Collection::Hash;
 
 use Scalar::Util qw/blessed/;
 
-BEGIN {
-  require Exporter;
-  our @ISA = qw(Exporter);
-  our @EXPORT = qw(hash);
-}
-
 use strictures 1;
 
 sub new { my $cl = shift; bless({ @_ }, $cl) }
-
-sub hash { Data::Perl::Collection::Hash->new(@_) }
 
 sub get { my $self = shift; @_ > 1 ? @{$self}{@_} : $self->{$_[0]} }
 

@@ -1,5 +1,5 @@
 use Test::More;
-use Data::Perl::String;
+use Data::Perl;
 
 # constructor
 is ref(string('a')), 'Data::Perl::String', 'constructor shortcut works';

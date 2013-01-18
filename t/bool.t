@@ -1,5 +1,5 @@
 use Test::More;
-use Data::Perl::Bool;
+use Data::Perl;
 use strict;
 
 use Scalar::Util qw/refaddr/;

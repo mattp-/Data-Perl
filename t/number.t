@@ -1,5 +1,5 @@
 use Test::More;
-use Data::Perl::Number;
+use Data::Perl;
 
 # constructor
 is ref(number(1)), 'Data::Perl::Number', 'constructor shortcut works';
