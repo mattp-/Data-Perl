@@ -1,6 +1,6 @@
 package Data::Perl::Bool;
 
-# ABSTRACT : Wrapping class for boolean values.
+# ABSTRACT: Wrapping class for boolean values.
 
 use strictures 1;
 
@@ -37,6 +37,11 @@ __END__
 None of these methods accept arguments.
 
 =over 4
+
+=item B<new($value)>
+
+Constructs a new Data::Perl::Collection::Bool object initialized with the passed
+in value, and returns it.
 
 =item * B<set>
 

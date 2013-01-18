@@ -1,6 +1,6 @@
 package Data::Perl::String;
 
-# ABSTRACT : Wrapping class for Perl scalar strings.
+# ABSTRACT: Wrapping class for Perl scalar strings.
 
 use strictures 1;
 
@@ -54,6 +54,11 @@ __END__
 =head1 PROVIDED METHODS
 
 =over 4
+
+=item B<new($value)>
+
+Constructs a new Data::Perl::String object, optionally initialized to $value if
+passed in, and returns it.
 
 =item * B<inc>
 

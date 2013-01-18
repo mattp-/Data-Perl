@@ -1,6 +1,6 @@
 package Data::Perl::Code;
 
-# ABSTRACT : Wrapping class for Perl coderefs.
+# ABSTRACT: Wrapping class for Perl coderefs.
 
 use strictures 1;
 
@@ -30,6 +30,11 @@ __END__
 =head1 PROVIDED METHODS
 
 =over 4
+
+=item B<new($coderef)>
+
+Constructs a new Data::Perl::Code object, initialized to $coderef as passed in,
+and returns it.
 
 =item * B<execute(@args)>
 

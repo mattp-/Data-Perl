@@ -1,6 +1,6 @@
 package Data::Perl::Collection::Hash;
 
-# ABSTRACT : Wrapping class for Perl's built in hash structure.
+# ABSTRACT: Wrapping class for Perl's built in hash structure.
 
 use Scalar::Util qw/blessed/;
 
@@ -74,6 +74,11 @@ __END__
 =head1 PROVIDED METHODS
 
 =over 4
+
+=item B<new($key, $value, ...)>
+
+Given an optional list of keys/values, constructs a new Data::Perl::Collection::Hash
+object initalized with keys/values and returns it.
 
 =item B<get($key, $key2, $key3...)>
 

@@ -1,6 +1,6 @@
 package Data::Perl::Number;
 
-# ABSTRACT : Wrapping class for Perl scalar numbers.
+# ABSTRACT: Wrapping class for Perl scalar numbers.
 
 use strictures 1;
 
@@ -43,6 +43,11 @@ All of these methods modify the attribute's value in place. All methods return
 the new value.
 
 =over 4
+
+=item B<new($value)>
+
+Constructs a new Data::Perl::Collection::Number object initialized with the passed
+in value, and returns it.
 
 =item * B<add($value)>
 

@@ -1,6 +1,6 @@
 package Data::Perl::Collection::Array;
 
-# ABSTRACT : Wrapping class for Perl's built in array structure.
+# ABSTRACT: Wrapping class for Perl's built in array structure.
 
 use List::Util;
 use List::MoreUtils;
@@ -107,6 +107,11 @@ __END__
 =head1 PROVIDED METHODS
 
 =over 4
+
+=item B<new($value, $value, ....)>
+
+Constructs a new Data::Perl::Collection::Array object initialized with passed
+in values, and returns it.
 
 =item * B<count>
 

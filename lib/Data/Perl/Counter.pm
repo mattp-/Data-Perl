@@ -1,6 +1,6 @@
 package Data::Perl::Counter;
 
-# ABSTRACT : Wrapping class for a simple numeric counter.
+# ABSTRACT: Wrapping class for a simple numeric counter.
 
 use strictures 1;
 
@@ -33,6 +33,11 @@ __END__
 =head1 PROVIDED METHODS
 
 =over 4
+
+=item B<new($value)>
+
+Constructs a new Data::Perl::Collection::Counter object initialized with the passed
+in value, and returns it.
 
 =item * B<set($value)>
 
