@@ -1,7 +1,8 @@
 use Test::More;
 use Data::Perl;
-
 use Scalar::Util qw/refaddr/;
+
+use strict;
 
 # constructor
 is ref(counter(1)), 'Data::Perl::Counter', 'constructor shortcut works';

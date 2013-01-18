@@ -1,6 +1,8 @@
 use Test::More;
 use Data::Perl;
 
+use strict;
+
 use Scalar::Util qw/refaddr/;
 
 # thanks to Mojo::Collection for skeleton test

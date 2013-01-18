@@ -1,6 +1,8 @@
 use Test::More;
 use Data::Perl;
 
+use strict;
+
 # constructor
 is ref(string('a')), 'Data::Perl::String', 'constructor shortcut works';
 

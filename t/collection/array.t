@@ -2,10 +2,12 @@ use Test::More;
 use Data::Perl;
 use Scalar::Util qw/refaddr/;
 
+use strict;
+
 # thanks to Mojo::Collection for skeleton test
 
 # size
-$collection = array();
+my $collection = array();
 is $collection->count, 0, 'right size';
 $collection = array(undef);
 is @{$collection}, 1, 'right size';
@@ -20,7 +22,7 @@ is @{$collection}, 5, 'right size';
 # Array
 is array(1,2,3)->[1], 2, 'right result';
 is_deeply [@{array(3, 2, 1)}], [3, 2, 1], 'right result';
-my $collection = array(1, 2);
+$collection = array(1, 2);
 push @$collection, 3, 4, 5;
 is_deeply [@$collection], [1, 2, 3, 4, 5], 'right result';
 
@@ -64,17 +66,17 @@ my $ar = array(2); $ar->push(1);
 is_deeply [$ar->elements], [2,1], 'push works';
 
 # shift
-my $ar = array(2,3);
-is $ar->shift, 2, 'shift works';
+$ar = array(2,3);
+is $ar->shift(), 2, 'shift works';
 is_deeply [$ar->elements], [3], 'shift works';
 
 # unshift
-my $ar = array(3);
-$ar->unshift(2), 'unshift works';
+$ar = array(3);
+$ar->unshift(2);
 is_deeply [$ar->elements], [2,3], 'unshift works';
 
 # splice
-my $ar = array(1);
+$ar = array(1);
 $ar->splice(0,1,2);
 is_deeply [$ar->elements], [2], 'splice works';
 
