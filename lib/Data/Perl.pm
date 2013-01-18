@@ -131,4 +131,6 @@ Returns a Data::Perl::Bool object initialized with the truth value of the passed
 
 Returns a Data::Perl::Code object initialized with the optionally passed in scalar coderef as an arg.
 
+=back
+
 =cut
