@@ -1,4 +1,5 @@
 {{$NEXT}}
+  - fixes ugly POD typo in Data::Perl
 
 0.001001  2013-01-25 13:22:36 EST5EDT
   - adds missing dependencies on strictures.
