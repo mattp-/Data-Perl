@@ -74,7 +74,7 @@ __END__
 Data::Perl is a collection of classes that wrap fundamental data types that
 exist in Perl. These classes and methods as they exist today are an attempt to
 mirror functionality provided by Moose's Native Traits. One important thing to
-note is all classes currently do no validation on constructor input. b<This may
+note is all classes currently do no validation on constructor input. B<This may
 change in the future>.
 
 Data::Perl is a container class for the following classes:
