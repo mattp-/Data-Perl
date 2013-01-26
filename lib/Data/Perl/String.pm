@@ -33,7 +33,17 @@ sub clear { ${$_[0]} = '' }
 
 sub length { CORE::length ${$_[0]} }
 
-sub substr { ... }
+sub substr {
+  if (@_ >= 4) {
+    substr ${$_[0]}, $_[1], $_[2], $_[3];
+  }
+  elsif (@_ == 3) {
+    substr ${$_[0]}, $_[1], $_[2];
+  }
+  else {
+    substr ${$_[0]}, $_[1];
+  }
+}
 
 1;
 __END__
