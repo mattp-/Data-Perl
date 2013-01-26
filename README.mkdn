@@ -4,7 +4,7 @@ Data::Perl - Base classes wrapping fundamental Perl data types.
 
 # VERSION
 
-version 0.001002
+version 0.001003
 
 # SYNOPSIS
 
@@ -62,31 +62,31 @@ Data::Perl exports helper constructor functions to interface with the above clas
 
 - __hash(key, value, ...)__
 
-Returns a Data::Perl::Collection::Hash object initialized with the optionally passed in key/value args.
+    Returns a Data::Perl::Collection::Hash object initialized with the optionally passed in key/value args.
 
 - __array(@args)__
 
-Returns a Data::Perl::Collection::Array object initialized with the optionally passed in values.
+    Returns a Data::Perl::Collection::Array object initialized with the optionally passed in values.
 
 - __string($arg)__
 
-Returns a Data::Perl::String object initialized with the optionally passed in scalar arg.
+    Returns a Data::Perl::String object initialized with the optionally passed in scalar arg.
 
 - __number($arg)__
 
-Returns a Data::Perl::Number object initialized with the optionally passed in scalar arg.
+    Returns a Data::Perl::Number object initialized with the optionally passed in scalar arg.
 
 - __counter($arg)__
 
-Returns a Data::Perl::Counter object initialized with the optionally passed in scalar arg.
+    Returns a Data::Perl::Counter object initialized with the optionally passed in scalar arg.
 
 - __bool($arg)__
 
-Returns a Data::Perl::Bool object initialized with the truth value of the passed in scalar arg.
+    Returns a Data::Perl::Bool object initialized with the truth value of the passed in scalar arg.
 
 - __code($arg)__
 
-Returns a Data::Perl::Code object initialized with the optionally passed in scalar coderef as an arg.
+    Returns a Data::Perl::Code object initialized with the optionally passed in scalar coderef as an arg.
 
 # THANKS
 
