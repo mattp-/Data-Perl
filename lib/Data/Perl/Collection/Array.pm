@@ -2,11 +2,12 @@ package Data::Perl::Collection::Array;
 
 # ABSTRACT: Wrapping class for Perl's built in array structure.
 
+use strictures 1;
+
 use List::Util;
 use List::MoreUtils;
 use Scalar::Util qw/blessed/;
-
-use strictures 1;
+use Syntax::Keyword::Junction ();
 
 sub new { my $cl = shift; bless([ @_ ], $cl) }
 
@@ -32,27 +33,13 @@ sub first { &List::Util::first($_[1], @{$_[0]}) }
 
 sub first_index { &List::MoreUtils::first_index($_[1], @{$_[0]}) }
 
-sub grep {
-  my ($self, $cb) = @_;
-  grep { $_->$cb } @$self;
-}
-
-sub map {
-  my ($self, $cb) = @_;
-  map { $_->$cb } @$self;
-}
-
 sub reduce { List::Util::reduce { $_[1]->($a, $b) } @{$_[0]} }
-
-sub sort { $_[1] ? sort { $_[1]->($a, $b) } @{$_[0]} : sort @{$_[0]} }
 
 sub sort_in_place { @{$_[0]} = ($_[1] ? sort { $_[1]->($a, $b) } @{$_[0]} : sort @{$_[0]}) }
 
 sub shuffle { &List::Util::shuffle(@{$_[0]}) }
 
 sub uniq { &List::MoreUtils::uniq(@{$_[0]}) }
-
-sub join { join $_[1], @{$_[0]} }
 
 sub set { $_[0]->[ $_[1] ] = $_[2] }
 
@@ -83,6 +70,76 @@ sub natatime {
 }
 
 sub shallow_clone { blessed($_[0]) ? bless([@{$_[0]}], ref $_[0]) : [@{$_[0]}] }
+
+# Data::Collection methods that return a Data::Perl::Collection::Array object
+sub members {
+  my ($self) = @_;
+  # TODO, fix
+  qw/map grep member_count sort reverse print any all one none join/;
+}
+
+sub map {
+  my ($self, $cb) = @_;
+
+  ref($self)->new(CORE::map { $_->$cb } $self->elements);
+}
+
+sub grep {
+  my ($self, $cb) = @_;
+
+  ref($self)->new(CORE::grep { $_->$cb } $self->elements);
+}
+
+sub member_count {
+  my ($self) = @_;
+
+  scalar $self->elements;
+}
+
+sub sort {
+  my ($self) = @_;
+
+  ref($self)->new($_[1] ? CORE::sort { $_[1]->($a, $b) } $self->elements: CORE::sort $self->elements);
+}
+
+sub reverse {
+  my ($self) = @_;
+
+  CORE::reverse $self->elements;
+}
+
+sub print {
+  my ($self, $fh) = @_;
+
+  print { $fh ||= *STDOUT } $self->join;
+}
+
+sub join {
+  my ($self, $with) = @_;
+
+  CORE::join $with||',', $self->elements;
+}
+
+# junctions
+sub all {
+  my ($self) = @_;
+  Syntax::Keyword::Junction::All->new($self->elements);
+}
+
+sub any {
+  my ($self) = @_;
+  Syntax::Keyword::Junction::Any->new($self->elements);
+}
+
+sub none {
+  my ($self) = @_;
+  Syntax::Keyword::Junction::None->new($self->elements);
+}
+
+sub one {
+  my ($self) = @_;
+  Syntax::Keyword::Junction::One->new($self->elements);
+}
 
 1;
 
