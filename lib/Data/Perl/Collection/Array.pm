@@ -105,7 +105,7 @@ sub sort {
 sub reverse {
   my ($self) = @_;
 
-  CORE::reverse $self->elements;
+  ref($self)->new(CORE::reverse $self->elements);
 }
 
 sub print {
