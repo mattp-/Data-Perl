@@ -4,7 +4,7 @@ package Data::Perl::Number;
 
 use strictures 1;
 
-sub new { bless(\$_[1], $_[0]) }
+sub new { bless \(my $n = $_[1]), $_[0] }
 
 sub add { ${$_[0]} = ${$_[0]} + $_[1] }
 

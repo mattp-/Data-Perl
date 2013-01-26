@@ -4,7 +4,7 @@ package Data::Perl::Counter;
 
 use strictures 1;
 
-sub new { my $cl = shift; bless \$_[0], $cl }
+sub new { bless \(my $n = $_[1]), $_[0] }
 
 sub inc { ${$_[0]} += ($_[1] ? $_[1] : 1) }
 
