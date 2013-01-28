@@ -123,22 +123,22 @@ sub join {
 # junctions
 sub all {
   my ($self) = @_;
-  Syntax::Keyword::Junction::All->new($self->elements);
+  Syntax::Keyword::Junction::all($self->elements);
 }
 
 sub any {
   my ($self) = @_;
-  Syntax::Keyword::Junction::Any->new($self->elements);
+  Syntax::Keyword::Junction::any($self->elements);
 }
 
 sub none {
   my ($self) = @_;
-  Syntax::Keyword::Junction::None->new($self->elements);
+  Syntax::Keyword::Junction::none($self->elements);
 }
 
 sub one {
   my ($self) = @_;
-  Syntax::Keyword::Junction::One->new($self->elements);
+  Syntax::Keyword::Junction::one($self->elements);
 }
 
 1;
