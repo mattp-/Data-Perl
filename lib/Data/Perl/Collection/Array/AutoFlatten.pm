@@ -1,189 +1,26 @@
-package Data::Perl::Collection::Array;
+package Data::Perl::Collection::Array::AutoFlatten;
 
 # ABSTRACT: Wrapping class for Perl's built in array structure.
 
+use parent qw/Data::Perl::Collection::Array/;
+
 use strictures 1;
 
-use List::Util;
-use List::MoreUtils;
-use Scalar::Util qw/blessed/;
-use Syntax::Keyword::Junction ();
+sub map { shift->SUPER::map(@_)->flatten }
 
-sub new { my $cl = CORE::shift; bless([ @_ ], $cl) }
+sub grep { shift->SUPER::grep(@_)->flatten }
 
-sub count { CORE::scalar @{$_[0]} }
+sub sort { shift->SUPER::sort(@_)->flatten }
 
-sub is_empty { CORE::scalar @{$_[0]} ? 0 : 1 }
+sub reverse { shift->SUPER::reverse(@_)->flatten }
 
-sub elements { @{$_[0]} }
+sub sort_in_place { shift->SUPER::sort_in_place(@_)->flatten }
 
-sub get { $_[0]->[ $_[1] ] }
+sub splice { shift->SUPER::splice(@_)->flatten }
 
-sub pop { CORE::pop @{$_[0]} }
+sub shuffle { shift->SUPER::shuffle(@_)->flatten }
 
-sub push { CORE::push @{$_[0]}, @_[1..$#_] }
-
-sub shift { CORE::shift @{$_[0]} }
-
-sub unshift { CORE::unshift @{$_[0]}, @_[1..$#_] }
-
-sub first { &List::Util::first($_[1], @{$_[0]}) }
-
-sub first_index { &List::MoreUtils::first_index($_[1], @{$_[0]}) }
-
-sub reduce { List::Util::reduce { $_[1]->($a, $b) } @{$_[0]} }
-
-sub set { $_[0]->[ $_[1] ] = $_[2] }
-
-sub accessor {
-  if (@_ == 2) {
-    $_[0]->[$_[1]];
-  }
-  elsif (@_ > 2) {
-    $_[0]->[$_[1]] = $_[2];
-  }
-}
-
-sub natatime {
-  my $iter = List::MoreUtils::natatime($_[1], @{$_[0]});
-
-  if ($_[2]) {
-    while (my @vals = $iter->()) {
-      $_[2]->(@vals);
-    }
-  }
-  else {
-    $iter;
-  }
-}
-
-sub shallow_clone { blessed($_[0]) ? bless([@{$_[0]}], ref $_[0]) : [@{$_[0]}] }
-
-# Data::Collection methods that return a Data::Perl::Collection::Array object
-#sub members {
-#  my ($self) = @_;
-#  qw/map grep member_count sort reverse print any all one none join/;
-#}
-
-sub map {
-  my ($self, $cb) = @_;
-
-  ref($self)->new(CORE::map { $_->$cb } $self->elements);
-}
-
-sub grep {
-  my ($self, $cb) = @_;
-
-  ref($self)->new(CORE::grep { $_->$cb } $self->elements);
-}
-
-sub sort {
-  my ($self) = @_;
-
-  ref($self)->new($_[1] ? CORE::sort { $_[1]->($a, $b) } $self->elements : CORE::sort $self->elements);
-}
-
-sub reverse {
-  my ($self) = @_;
-
-  ref($self)->new(CORE::reverse $self->elements);
-}
-
-sub sort_in_place {
-  my ($self) = @_;
-
-  @{$_[0]} = ($_[1] ? sort { $_[1]->($a, $b) } @{$_[0]} : sort @{$_[0]});
-
-  $self;
-}
-
-sub splice {
-  use Data::Dumper; warn Dumper\@_;
-
-  ref($_[0])->new(CORE::splice @{$_[0]}, $_[1], $_[2], @_[3..$#_]);
-}
-
-sub shuffle {
-  my ($self) = @_;
-
-  ref($self)->new(List::Util::shuffle($self->elements));
-}
-
-sub uniq {
-  my ($self) = @_;
-
-  ref($self)->new(List::MoreUtils::uniq($self->elements));
-}
-
-sub delete {
-  my ($self) = @_;
-
-  $self->splice($_[0], 1);
-}
-
-sub insert {
-  my ($self) = @_;
-
-  $self->splice($_[0], 0, $_[1]);
-}
-
-sub flatten {
-    @{$_[0]}
-}
-
-sub flatten_deep {
-  my ($self, $depth) = @_;
-  --$depth if (defined($depth));
-
-  my @elements = CORE::map {
-      (ref eq 'ARRAY')
-          ? (defined($depth) && $depth == -1) ? $_ : _flatten_deep( @$_, $depth )
-          : $_
-  } $self->elements;
-
-  ref($self)->new(@elements);
-}
-
-sub member_count {
-  my ($self) = @_;
-
-  scalar $self->elements;
-}
-
-sub join {
-  my ($self, $with) = @_;
-
-  CORE::join $with||',', $self->elements;
-}
-
-sub print {
-  my ($self, $fh) = @_;
-
-  print { $fh ||= *STDOUT } $self->join;
-}
-
-# junctions
-=begin
-sub all {
-  my ($self) = @_;
-  Syntax::Keyword::Junction::all($self->elements);
-}
-
-sub any {
-  my ($self) = @_;
-  Syntax::Keyword::Junction::any($self->elements);
-}
-
-sub none {
-  my ($self) = @_;
-  Syntax::Keyword::Junction::none($self->elements);
-}
-
-sub one {
-  my ($self) = @_;
-  Syntax::Keyword::Junction::one($self->elements);
-}
-=cut
+sub uniq { shift->SUPER::uniq(@_)->flatten }
 
 1;
 
