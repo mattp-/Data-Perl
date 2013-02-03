@@ -98,8 +98,6 @@ sub sort_in_place {
 }
 
 sub splice {
-  use Data::Dumper; warn Dumper\@_;
-
   ref($_[0])->new(CORE::splice @{$_[0]}, $_[1], $_[2], @_[3..$#_]);
 }
 
@@ -116,15 +114,15 @@ sub uniq {
 }
 
 sub delete {
-  my ($self) = @_;
+  my ($self, $idx) = @_;
 
-  $self->splice($_[0], 1);
+  $self->splice($idx, 1);
 }
 
 sub insert {
-  my ($self) = @_;
+  my ($self, $idx, $el) = @_;
 
-  $self->splice($_[0], 0, $_[1]);
+  $self->splice($idx, 0, $el);
 }
 
 sub flatten {
@@ -153,7 +151,7 @@ sub member_count {
 sub join {
   my ($self, $with) = @_;
 
-  CORE::join $with||',', $self->elements;
+  CORE::join((defined $with ? $with : ','), $self->elements);
 }
 
 sub print {
