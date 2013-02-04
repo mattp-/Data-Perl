@@ -35,7 +35,7 @@ __END__
 
 =head1 DESCRIPTION
 
-  This class provides a wrapper and methods for interacting with scalar strings.
+This class provides a wrapper and methods for interacting with scalar strings.
 
 =head1 PROVIDED METHODS
 

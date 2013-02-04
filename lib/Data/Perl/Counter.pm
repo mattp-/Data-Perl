@@ -28,7 +28,7 @@ __END__
 
 =head1 DESCRIPTION
 
-  This class provides a wrapper and methods for a simple numeric counter.
+This class provides a wrapper and methods for a simple numeric counter.
 
 =head1 PROVIDED METHODS
 

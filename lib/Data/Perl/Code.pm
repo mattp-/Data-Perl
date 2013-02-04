@@ -25,7 +25,7 @@ __END__
 
 =head1 DESCRIPTION
 
-  This class provides a wrapper and methods for interacting with Perl coderefs.
+This class provides a wrapper and methods for interacting with Perl coderefs.
 
 =head1 PROVIDED METHODS
 

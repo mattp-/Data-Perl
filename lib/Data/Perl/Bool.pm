@@ -30,7 +30,7 @@ __END__
 
 =head1 DESCRIPTION
 
-  This class provides a wrapper and methods for interacting with boolean values.
+This class provides a wrapper and methods for interacting with boolean values.
 
 =head1 PROVIDED METHODS
 
