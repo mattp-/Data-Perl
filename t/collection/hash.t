@@ -1,16 +1,19 @@
 use Test::More;
-use Data::Perl;
+use Data::Perl::Collection::Hash::AutoFlatten;
 
 use strict;
 
 use Scalar::Util qw/refaddr/;
 
+sub hash { Data::Perl::Collection::Hash::AutoFlatten->new(@_) }
+
 # thanks to Mojo::Collection for skeleton test
-is ref(hash('a',1,'b',2)), 'Data::Perl::Collection::Hash', 'constructor shortcut works';
+is ref(hash('a',1,'b',2)), 'Data::Perl::Collection::Hash::AutoFlatten', 'constructor shortcut works';
 
 # hash
 is hash('a', 1, 'b', 2)->{'b'}, 2, 'right result';
 is_deeply {%{hash(a => 1, b => 2)}}, { a=>1, b=>2 }, 'right result';
+
 # set
 my $h = hash(a=>1);
 $h->set(d=>5,e=>6);
@@ -51,7 +54,7 @@ $h = hash(a=>1,b=>2);
 is_deeply [sort $h->values], [1,2], 'values ok';
 
 # kv
-is_deeply [$h->kv], [ [qw/a 1/], [qw/b 2/]], 'kv works';
+is_deeply [$h->kv], [[qw/a 1/], [qw/b 2/]], 'kv works';
 
 # elements
 is_deeply [$h->elements], [ qw/a 1 b 2/], 'elements works';

@@ -7,7 +7,6 @@ use strictures 1;
 use List::Util;
 use List::MoreUtils;
 use Scalar::Util qw/blessed/;
-use Syntax::Keyword::Junction ();
 
 sub new { my $cl = CORE::shift; bless([ @_ ], $cl) }
 
@@ -68,7 +67,7 @@ sub shallow_clone { blessed($_[0]) ? bless([@{$_[0]}], ref $_[0]) : [@{$_[0]}] }
 sub map {
   my ($self, $cb) = @_;
 
-  ref($self)->new(CORE::map { $_->$cb } $self->elements);
+  ref($self)->new(CORE::map { $cb->($_) } $self->elements);
 }
 
 sub grep {
@@ -98,7 +97,14 @@ sub sort_in_place {
 }
 
 sub splice {
-  ref($_[0])->new(CORE::splice @{$_[0]}, $_[1], $_[2], @_[3..$#_]);
+  my @splice = CORE::splice @{$_[0]}, $_[1], $_[2], @_[3..$#_];
+
+  if (wantarray) {
+    ref($_[0])->new(@splice);
+  }
+  else {
+    $splice[$#splice];
+  }
 }
 
 sub shuffle {
@@ -160,29 +166,6 @@ sub print {
   print { $fh ||= *STDOUT } $self->join;
 }
 
-# junctions
-=begin
-sub all {
-  my ($self) = @_;
-  Syntax::Keyword::Junction::all($self->elements);
-}
-
-sub any {
-  my ($self) = @_;
-  Syntax::Keyword::Junction::any($self->elements);
-}
-
-sub none {
-  my ($self) = @_;
-  Syntax::Keyword::Junction::none($self->elements);
-}
-
-sub one {
-  my ($self) = @_;
-  Syntax::Keyword::Junction::one($self->elements);
-}
-=cut
-
 1;
 
 __END__
@@ -196,12 +179,13 @@ __END__
 
   $array->push(5);
 
-  $array->grep(sub { $_ > 2 }); # (3, 5);
+  $array->grep(sub { $_ > 2 })->map(sub { $_ ** 2 })->elements; # (3, 5);
 
 
 =head1 DESCRIPTION
 
-  This class provides a wrapper and methods for interacting with a hash.
+This class provides a wrapper and methods for interacting with an array.
+All methods that return a list do so via a Data::Perl::Collection::Array object.
 
 =head1 PROVIDED METHODS
 
@@ -216,8 +200,7 @@ in values, and returns it.
 
 Returns the number of elements in the array.
 
-  $stuff = Stuff->new;
-  $stuff->options( [ "foo", "bar", "baz", "boo" ] );
+  $stuff = Data::Perl::Collection::Array->new(qw/foo bar baz boo/);
 
   print $stuff->count; # prints 4
 
@@ -281,8 +264,9 @@ This method accepts any number of arguments.
 =item * B<splice($offset, $length, @values)>
 
 Just like Perl's builtin C<splice>. In scalar context, this returns the last
-element removed, or C<undef> if no elements were removed. In list context,
-this returns all the elements removed from the array.
+element removed, or C<undef> if no elements were removed. In list context, this
+returns all the elements removed from the array, wrapped in a Collection::Array
+object.
 
 This method requires at least one argument.
 
@@ -312,7 +296,7 @@ This method requires a single argument.
 
 This method returns every element matching a given criteria, just like Perl's
 core C<grep> function. This method requires a subroutine which implements the
-matching logic.
+matching logic. The returned list is provided as a Collection::Array object.
 
   my @found = $stuff->grep( sub {/^b/} );
   print "@found\n";    # prints "bar baz boo"
@@ -321,9 +305,10 @@ This method requires a single argument.
 
 =item * B<map( sub { ... } )>
 
-This method transforms every element in the array and returns a new array,
-just like Perl's core C<map> function. This method requires a subroutine which
-implements the transformation.
+This method transforms every element in the array and returns a new array, just
+like Perl's core C<map> function. This method requires a subroutine which
+implements the transformation. The returned list is provided as
+a Collection::Array object.
 
   my @mod_options = $stuff->map( sub { $_ . "-tag" } );
   print "@mod_options\n";    # prints "foo-tag bar-tag baz-tag boo-tag"
@@ -350,7 +335,8 @@ Returns the elements of the array in sorted order.
 
 You can provide an optional subroutine reference to sort with (as you can with
 Perl's core C<sort> function). However, instead of using C<$a> and C<$b> in
-this subroutine, you will need to use C<$_[0]> and C<$_[1]>.
+this subroutine, you will need to use C<$_[0]> and C<$_[1]>. The returned list
+is provided as a Collection::Array object.
 
   # ascending ASCIIbetical
   my @sorted = $stuff->sort();
@@ -369,23 +355,29 @@ Sorts the array I<in place>, modifying the value of the attribute.
 
 You can provide an optional subroutine reference to sort with (as you can with
 Perl's core C<sort> function). However, instead of using C<$a> and C<$b>, you
-will need to use C<$_[0]> and C<$_[1]> instead.
-
-This method does not define a return value.
+will need to use C<$_[0]> and C<$_[1]> instead. The returned list is provided
+as a Collection::Array object.
 
 This method accepts a single argument.
+
+=item * B<reverse>
+
+Returns the elements of the array in reversed order. The returned list is
+provided as a Collection::Array object.
+
+This method does not accept any arguments.
 
 =item * B<shuffle>
 
 Returns the elements of the array in random order, like C<shuffle> from
-L<List::Util>.
+L<List::Util>. The returned list is provided as a Collection::Array object.
 
 This method does not accept any arguments.
 
 =item * B<uniq>
 
 Returns the array with all duplicate elements removed, like C<uniq> from
-L<List::MoreUtils>.
+L<List::MoreUtils>. The returned list is provided as a Collection::Array object.
 
 This method does not accept any arguments.
 
@@ -411,7 +403,9 @@ This method requires two arguments.
 
 Removes the element at the given index from the array.
 
-This method returns the deleted value. Note that if no value exists, it will
+This method returns the deleted value, either as an array or scalar as
+dependent on splice context semantics. Note that if no value exists, it will
+
 return C<undef>.
 
 This method requires one argument.
@@ -420,7 +414,8 @@ This method requires one argument.
 
 Inserts a new element into the array at the given index.
 
-This method returns the new value at C<$index>.
+This method returns the new value at C<$index>, either as an array or scalar as
+dependent on splice context semantics.
 
 This method requires two arguments.
 
@@ -461,6 +456,21 @@ This method returns a shallow clone of the array reference.  The return value
 is a reference to a new array with the same elements.  It is I<shallow>
 because any elements that were references in the original will be the I<same>
 references in the clone.
+
+=back
+
+=item * B<flatten>
+
+This method returns a list of elements in the array.  This method is an alias
+to the I<elements> method.
+
+=back
+
+=item * B<flatten_deep($level)>
+
+This method returns a flattened list of elements in the array. Will flatten
+arrays contained within the root array recursively - depth is controlled by the
+optional $level parameter.
 
 =back
 

@@ -1,29 +1,31 @@
-package Data::Perl::Collection::Array::AutoFlatten;
+package Data::Perl::Collection::Hash::AutoFlatten;
 
 # ABSTRACT: Wrapping class for Perl's built in array structure.
 
-use parent qw/Data::Perl::Collection::Array/;
+use parent qw/Data::Perl::Collection::Hash/;
 
 use strictures 1;
 
-sub map { shift->SUPER::map(@_)->flatten }
-
-sub grep { shift->SUPER::grep(@_)->flatten }
-
-sub sort { shift->SUPER::sort(@_)->flatten }
-
-sub reverse { shift->SUPER::reverse(@_)->flatten }
-
-sub sort_in_place { shift->SUPER::sort_in_place(@_)->flatten }
-
-sub splice {
+sub get {
   my $self = shift;
-  wantarray ? $self->SUPER::splice(@_)->flatten : $self->SUPER::splice(@_)
+  wantarray ? $self->SUPER::get(@_)->flatten : $self->SUPER::get(@_)
 }
 
-sub shuffle { shift->SUPER::shuffle(@_)->flatten }
+sub set {
+  my $self = shift;
+  wantarray ? $self->SUPER::set(@_)->flatten : $self->SUPER::set(@_)
+}
 
-sub uniq { shift->SUPER::uniq(@_)->flatten }
+sub delete {
+  my $self = shift;
+  wantarray ? $self->SUPER::delete(@_)->flatten : $self->SUPER::delete(@_)
+}
+
+sub keys { shift->SUPER::keys(@_)->flatten }
+
+sub kv { shift->SUPER::kv(@_)->flatten }
+
+sub elements { shift->SUPER::elements(@_)->flatten }
 
 1;
 

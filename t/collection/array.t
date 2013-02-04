@@ -1,10 +1,13 @@
 use Test::More;
-use Data::Perl;
 use Scalar::Util qw/refaddr/;
 
 use strict;
 
 # thanks to Mojo::Collection for skeleton test
+
+use Data::Perl::Collection::Array::AutoFlatten;
+
+sub array { Data::Perl::Collection::Array::AutoFlatten->new(@_) }
 
 # size
 my $collection = array();

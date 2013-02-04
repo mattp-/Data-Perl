@@ -2,13 +2,17 @@ package Data::Perl::Collection::Hash;
 
 # ABSTRACT: Wrapping class for Perl's built in hash structure.
 
-use Scalar::Util qw/blessed/;
-
 use strictures 1;
+
+use Scalar::Util qw/blessed/;
+use Data::Perl::Collection::Array;
 
 sub new { my $cl = shift; bless({ @_ }, $cl) }
 
-sub get { my $self = shift; @_ > 1 ? @{$self}{@_} : $self->{$_[0]} }
+sub get {
+  my $self = shift;
+  @_ > 1 ? Data::Perl::Collection::Array->new(@{$self}{@_}) : $self->{$_[0]}
+}
 
 sub set {
   my $self = shift;
@@ -17,28 +21,36 @@ sub set {
 
   @{$self}{@_[@keys_idx]} = @_[@values_idx];
 
-  return wantarray ? @{$self}{@_[@keys_idx]} : $self->{$_[$keys_idx[0]]};
+  if (wantarray) {
+    return Data::Perl::Collection::Array->new(@{$self}{@_[@keys_idx]});
+  }
+  else {
+    return $self->{$_[$keys_idx[0]]};
+  }
 }
 
-sub delete { delete @{$_[0]}{@_} }
+sub delete {
+  my @deleted = CORE::delete @{$_[0]}{@_};
+  wantarray ? Data::Perl::Collection::Array->new(@deleted) : $deleted[$#deleted];
+}
 
-sub keys { keys %{$_[0]} }
+sub keys { Data::Perl::Collection::Array->new(keys %{$_[0]}) }
 
-sub exists { exists $_[0]->{$_[1]} }
+sub exists { CORE::exists $_[0]->{$_[1]} }
 
-sub defined { defined $_[0]->{$_[1]} }
+sub defined { CORE::defined $_[0]->{$_[1]} }
 
-sub values { values %{$_[0]} }
+sub values { CORE::values %{$_[0]} }
 
-sub kv { map { [ $_, $_[0]->{$_} ] } CORE::keys %{$_[0]} }
+sub kv { Data::Perl::Collection::Array->new(CORE::map { [ $_, $_[0]->{$_} ] } CORE::keys %{$_[0]}) }
 
-sub elements { map { $_, $_[0]->{$_} } CORE::keys %{$_[0]} }
+sub elements { Data::Perl::Collection::Array->new(CORE::map { $_, $_[0]->{$_} } CORE::keys %{$_[0]}) }
 
-sub clear { %{$_[0]} = () }
+sub clear { ref($_[0])->new(%{$_[0]} = ()) }
 
-sub count { scalar CORE::keys %{$_[0]} }
+sub count { CORE::scalar CORE::keys %{$_[0]} }
 
-sub is_empty { scalar CORE::keys %{$_[0]} ? 0 : 1 }
+sub is_empty { CORE::scalar CORE::keys %{$_[0]} ? 0 : 1 }
 
 sub accessor {
   if (@_ == 2) {
@@ -69,7 +81,8 @@ __END__
 
 =head1 DESCRIPTION
 
-  This class provides a wrapper and methods for interacting with a hash.
+This class provides a wrapper and methods for interacting with a hash.
+All methods that return a list do so via a Data::Perl::Collection::Array object.
 
 =head1 PROVIDED METHODS
 
