@@ -31,7 +31,7 @@ sub set {
 
 sub delete {
   my @deleted = CORE::delete @{$_[0]}{@_};
-  wantarray ? Data::Perl::Collection::Array->new(@deleted) : $deleted[$#deleted];
+  wantarray ? Data::Perl::Collection::Array->new(@deleted) : $deleted[-1];
 }
 
 sub keys { Data::Perl::Collection::Array->new(keys %{$_[0]}) }

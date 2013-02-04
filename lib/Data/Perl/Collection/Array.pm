@@ -103,7 +103,7 @@ sub splice {
     ref($_[0])->new(@splice);
   }
   else {
-    $splice[$#splice];
+    $splice[-1];
   }
 }
 
