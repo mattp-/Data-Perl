@@ -1,5 +1,6 @@
 use Test::More;
 use Scalar::Util qw/refaddr/;
+use Test::Output;
 
 use strict;
 
@@ -59,6 +60,7 @@ is array(1,2)->get(1), 2, 'get correct';
 # accessor get
 is array()->accessor(0), undef, 'accessor get correct';
 is array(1,2)->accessor(1), 2, 'accessor get correct';
+is array(1,2)->accessor(), '', 'accessor get 0 arg does nothing';
 
 # pop
 is array()->pop, undef, 'pop correct';
@@ -82,6 +84,10 @@ is_deeply [$ar->elements], [2,3], 'unshift works';
 $ar = array(1);
 $ar->splice(0,1,2);
 is_deeply [$ar->elements], [2], 'splice works';
+
+$ar = array(9,8,7,6);
+my @b = $ar->splice(0,2,2, 3, 4);
+is_deeply [@b], [9,8], 'splice autoflatten works';
 
 # first/first_index
 $collection = array(5, 4, [3, 2], 1);
@@ -127,7 +133,9 @@ is_deeply [$collection->sort(sub { $_[0] <=> $_[1] })], [1,2,3,4,5], 'sort works
 
 # sort_in_place
 $collection = array(5,2,4,1,3);
-$collection->sort_in_place(sub { $_[0] <=> $_[1] });
+$collection->sort_in_place(sub { $_[1] <=> $_[0] });
+is_deeply [$collection->elements], [5,4,3,2,1], 'sort works';
+$collection->sort_in_place;
 is_deeply [$collection->elements], [1,2,3,4,5], 'sort works';
 
 # shuffle
@@ -157,6 +165,7 @@ is_deeply [$collection->uniq], [1, 2, 3, 4, 5], 'right result';
 
 # join
 $collection = array(1, 2, 3);
+is $collection->join,        '1,2,3',       'right result';
 is $collection->join(''),    '123',       'right result';
 is $collection->join('---'), '1---2---3', 'right result';
 is $collection->join("\n"),  "1\n2\n3",   'right result';
@@ -175,6 +184,8 @@ is_deeply $ar, [2,2,3,undef,undef,4], 'set works';
 $ar = array(1,2,3);
 $ar->accessor(0, 2);
 is_deeply $ar, [2,2,3], 'set works';
+$ar->accessor(0, 2,9,9,9);
+is_deeply $ar, [2,2,3], 'set works, extraneous args do nothing';
 $ar->set(5, 4);
 is_deeply $ar, [2,2,3,undef,undef,4], 'set works';
 
@@ -203,7 +214,30 @@ $ar = array(1,2,3);
 my $foo = $ar->shallow_clone;
 is_deeply([$ar->elements], $foo, 'shallow clone is a clone');
 
+# shallow_clone as a class method
+my $foo = Data::Perl::Collection::Array::shallow_clone([1,2,3]);
+is_deeply($foo, [1,2,3], 'shallow clone is a clone as a class method');
+
+
 isnt refaddr($ar), refaddr($foo), 'refaddr doesnt match on clone';
+
+
+# flatten_deep
+my $a = Data::Perl::Collection::Array->new(1, 2, [3, [4, [5] ] ], 6);
+is_deeply [Data::Perl::Collection::Array->new(1, 2, [3, [4, [5] ] ], 6)->flatten_deep(2)], [1,2,3,4,[5], 6], 'flatten_deep(depth) works';
+is_deeply [Data::Perl::Collection::Array->new(1, 2, [3, [4, [5] ] ], 6)->flatten_deep], [1,2,3,4,5,6], 'flatten_deep(depth) works';
+
+# reverse
+$a = array(1,2,3,4,5);
+is_deeply([$a->reverse], [5,4,3,2,1], 'reverse works');
+
+# member count
+is $a->member_count, 5, 'member_count works';
+
+# print
+stdout_is(sub { $a->print }, '1,2,3,4,5', 'print works');
+stdout_is(sub { $a->print(*STDOUT, ':') }, '1:2:3:4:5', 'print works with join arg');
+stderr_is(sub { $a->print(*STDERR) }, '1,2,3,4,5', 'print to different handle works');
 
 =begin
 # slice
