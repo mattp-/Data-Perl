@@ -137,15 +137,20 @@ sub flatten {
 
 sub flatten_deep {
   my ($self, $depth) = @_;
+
+  _flatten_deep($self->elements, $depth);
+}
+
+sub _flatten_deep {
+  my @array = @_;
+  my $depth = CORE::pop @array;
   --$depth if (defined($depth));
 
   my @elements = CORE::map {
       (ref eq 'ARRAY')
           ? (defined($depth) && $depth == -1) ? $_ : _flatten_deep( @$_, $depth )
           : $_
-  } $self->elements;
-
-  ref($self)->new(@elements);
+  } @array;
 }
 
 sub member_count {
@@ -161,9 +166,9 @@ sub join {
 }
 
 sub print {
-  my ($self, $fh) = @_;
+  my ($self, $fh, $arg) = @_;
 
-  print { $fh ||= *STDOUT } $self->join;
+  print { $fh ||= *STDOUT } $self->join($arg);
 }
 
 1;

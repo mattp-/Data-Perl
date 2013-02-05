@@ -18,7 +18,14 @@ sub sort_in_place { shift->SUPER::sort_in_place(@_)->flatten }
 
 sub splice {
   my $self = shift;
-  wantarray ? $self->SUPER::splice(@_)->flatten : $self->SUPER::splice(@_)
+  if (wantarray) {
+    my ($result) = $self->SUPER::splice(@_);
+    $result->flatten;
+  }
+  else {
+    $self->SUPER::splice(@_);
+  }
+
 }
 
 sub shuffle { shift->SUPER::shuffle(@_)->flatten }
