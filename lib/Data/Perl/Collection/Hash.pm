@@ -30,7 +30,8 @@ sub set {
 }
 
 sub delete {
-  my @deleted = CORE::delete @{$_[0]}{@_};
+  my $self = shift;
+  my @deleted = CORE::delete @{$self}{@_};
   wantarray ? Data::Perl::Collection::Array->new(@deleted) : $deleted[-1];
 }
 

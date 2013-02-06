@@ -8,17 +8,19 @@ use strictures 1;
 
 sub get {
   my $self = shift;
-  wantarray ? $self->SUPER::get(@_)->flatten : $self->SUPER::get(@_)
+  @_ > 1 ? $self->SUPER::get(@_)->flatten : $self->SUPER::get(@_)
 }
 
 sub set {
   my $self = shift;
-  wantarray ? $self->SUPER::set(@_)->flatten : $self->SUPER::set(@_)
+  my ($results) = $self->SUPER::set(@_);
+  wantarray ? $results->flatten : $results->get(0);
 }
 
 sub delete {
   my $self = shift;
-  wantarray ? $self->SUPER::delete(@_)->flatten : $self->SUPER::delete(@_)
+  my ($results) = $self->SUPER::delete(@_);
+  wantarray ? $results->flatten : $results->get(-1);
 }
 
 sub keys { shift->SUPER::keys(@_)->flatten }

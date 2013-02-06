@@ -6,6 +6,7 @@ use Test::Fatal qw/dies_ok/;
 
 # constructor
 is ref(code(sub{})), 'Data::Perl::Code', 'constructor shortcut works';
+is code->execute, undef, 'execute on blank sub returns correct undef';
 
 my $b = code(sub { 2 });
 is reftype($b), 'CODE', 'inner struct is coderef of ctr';

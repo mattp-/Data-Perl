@@ -50,6 +50,15 @@ is $$c, '', 'clear works';
 $c = string("12345");
 is $c->length, 5, 'length works';
 
-
+# substr
+my $s = string("The black cat climbed the green tree");
+is $s->substr(4, 5), 'black', 'substr 1';
+is $s->substr(4, -11), 'black cat climbed the', 'substr 2';
+is $s->substr(14), 'climbed the green tree', 'substr 3';
+is $s->substr(-4), 'tree', 'substr 4';
+is $s->substr(-4, 2), 'tr', 'substr 5';
+is $s->substr(-4, 2), 'tr', 'substr 5';
+is $s->substr(1, 2, 'foobar'), 'he', 'substr 6';
+is $$s,'Tfoobar black cat climbed the green tree', 'string matches';
 
 done_testing();

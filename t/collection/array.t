@@ -215,7 +215,7 @@ my $foo = $ar->shallow_clone;
 is_deeply([$ar->elements], $foo, 'shallow clone is a clone');
 
 # shallow_clone as a class method
-my $foo = Data::Perl::Collection::Array::shallow_clone([1,2,3]);
+$foo = Data::Perl::Collection::Array::shallow_clone([1,2,3]);
 is_deeply($foo, [1,2,3], 'shallow clone is a clone as a class method');
 
 

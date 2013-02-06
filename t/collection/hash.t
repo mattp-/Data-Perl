@@ -15,24 +15,35 @@ is hash('a', 1, 'b', 2)->{'b'}, 2, 'right result';
 is_deeply {%{hash(a => 1, b => 2)}}, { a=>1, b=>2 }, 'right result';
 
 # set
-my $h = hash(a=>1);
+my $h = Data::Perl::Collection::Hash->new(a=>1);
 $h->set(d=>5,e=>6);
 is_deeply $h, {a=>1,d=>5,e=>6}, 'set many right result';
+my ($obj) = $h->set(x=>5,y=>6);
+is_deeply $obj, [5,6], 'set many right result in list context';
 
 $h = hash(b=>3);
 $h->set(d=>5);
 is_deeply $h, {d=>5,b=>3}, 'set right result';
 
+my @results = $h->set(d=>5, b => 3, e => 6);
+is_deeply \@results, [5,3,6], 'set list context works';
 # get
 is hash(a => 1, b => 2)->get('b'), 2, 'get right result';
 is_deeply [hash(a => 1, b => 2)->get(qw/a b c/)], [1, 2, undef ], 'get many right result';
 
 # delete
-$h->delete(qw/b/);
-is_deeply $h, {d=>5}, 'set right result';
+$h = hash(qw/b 3 a 1 c 2 d 3 e 4 y 5 u 7/);
+is $h->delete(qw/b/), 3, 'delete returned right result';
+is_deeply $h, {qw/a 1 c 2 d 3 e 4 y 5 u 7/}, 'delete right result';
 
-$h->delete(qw/d/);
-is_deeply $h, {}, 'set right result';
+is $h->delete(qw/4444/), undef, 'delete returned right result';
+
+@results = $h->delete(qw/a c d e y u/);
+is_deeply [@results], [qw/1 2 3 4 5 7/], 'delete right result';
+is_deeply $h, {}, 'delete right result';
+$h = Data::Perl::Collection::Hash->new(a=>1, b =>2);
+my $result = $h->delete('a');
+is $result, 1, 'scalar context delete works';
 
 # keys
 $h = hash(a=>1,b=>2,c=>3);
@@ -81,10 +92,16 @@ is $h->accessor('a', '4'), 4, 'accessor set works';
 is $h->accessor('r'), undef, 'accessor get on undef works';
 is $h->accessor('r', '5'), 5, 'accessor set on undef works';
 
+is $h->accessor(), '', 'no arg accessor get returning undef works';
+
 # shallow_clone
 $h = hash(a=>1,b=>2);
 my $foo = $h->shallow_clone;
 is_deeply [$h->kv], [ [qw/a 1/], [qw/b 2/]], 'shallow clone is a clone';
 isnt refaddr($h), refaddr($foo), 'refaddr doesnt match on clone';
+
+# shallow_clone as a class method
+$foo = Data::Perl::Collection::Hash::shallow_clone({1=>2,3=>4});
+is_deeply($foo, {1,2,3,4}, 'shallow clone is a clone as a class method');
 
 done_testing();
