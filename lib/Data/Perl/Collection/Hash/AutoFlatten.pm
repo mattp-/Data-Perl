@@ -80,11 +80,11 @@ items, a real array is returned.
 In list context, instead of returning a Data::Perl::Collection::Array object of
 items, a real array is returned.
 
-
 =item * B<elements>
 
 In list context, instead of returning a Data::Perl::Collection::Array object of
 items, a real array is returned.
+
 =back
 
 =head1 SEE ALSO

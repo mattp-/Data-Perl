@@ -231,9 +231,6 @@ is_deeply [Data::Perl::Collection::Array->new(1, 2, [3, [4, [5] ] ], 6)->flatten
 $a = array(1,2,3,4,5);
 is_deeply([$a->reverse], [5,4,3,2,1], 'reverse works');
 
-# member count
-is $a->member_count, 5, 'member_count works';
-
 # print
 stdout_is(sub { $a->print }, '1,2,3,4,5', 'print works');
 stdout_is(sub { $a->print(*STDOUT, ':') }, '1:2:3:4:5', 'print works with join arg');

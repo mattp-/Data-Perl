@@ -153,12 +153,6 @@ sub _flatten_deep {
   } @array;
 }
 
-sub member_count {
-  my ($self) = @_;
-
-  scalar $self->elements;
-}
-
 sub join {
   my ($self, $with) = @_;
 
@@ -396,6 +390,13 @@ like Perl's core C<join> function.
 
 This method requires a single argument.
 
+=item * B<print($handle, $str)>
+
+Prints the output of join($str) to $handle. $handle defaults to STDOUT, and
+join $str defaults to join()'s default of ','.
+
+  $joined = $stuff->print(*STDERR, ';'); # prints foo;bar;baz to STDERR
+
 =item * B<set($index, $value)>
 
 Given an index and a value, sets the specified array element's value.
@@ -462,14 +463,10 @@ is a reference to a new array with the same elements.  It is I<shallow>
 because any elements that were references in the original will be the I<same>
 references in the clone.
 
-=back
-
 =item * B<flatten>
 
 This method returns a list of elements in the array.  This method is an alias
 to the I<elements> method.
-
-=back
 
 =item * B<flatten_deep($level)>
 

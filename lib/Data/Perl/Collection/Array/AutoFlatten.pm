@@ -19,8 +19,7 @@ sub sort_in_place { shift->SUPER::sort_in_place(@_)->flatten }
 sub splice {
   my $self = shift;
   if (wantarray) {
-    my ($result) = $self->SUPER::splice(@_);
-    $result->flatten;
+    my ($result) = $self->SUPER::splice(@_); $result->flatten;
   }
   else {
     $self->SUPER::splice(@_);
@@ -97,6 +96,8 @@ returned.
 
 Instead of returning a Data::Perl::Collection::Array object, a real array is
 returned.
+
+=back
 
 =head1 SEE ALSO
 
