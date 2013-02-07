@@ -6,12 +6,13 @@ use strictures 1;
 
 use Scalar::Util qw/blessed/;
 use Data::Perl::Collection::Array;
+use constant _array_class => 'Data::Perl::Collection::Array';
 
 sub new { my $cl = shift; bless({ @_ }, $cl) }
 
 sub get {
   my $self = shift;
-  @_ > 1 ? Data::Perl::Collection::Array->new(@{$self}{@_}) : $self->{$_[0]}
+  @_ > 1 ? $self->_array_class->new(@{$self}{@_}) : $self->{$_[0]}
 }
 
 sub set {
@@ -22,7 +23,7 @@ sub set {
   @{$self}{@_[@keys_idx]} = @_[@values_idx];
 
   if (wantarray) {
-    return Data::Perl::Collection::Array->new(@{$self}{@_[@keys_idx]});
+    return $self->_array_class->new(@{$self}{@_[@keys_idx]});
   }
   else {
     return $self->{$_[$keys_idx[0]]};
@@ -32,10 +33,10 @@ sub set {
 sub delete {
   my $self = shift;
   my @deleted = CORE::delete @{$self}{@_};
-  wantarray ? Data::Perl::Collection::Array->new(@deleted) : $deleted[-1];
+  wantarray ? $self->_array_class->new(@deleted) : $deleted[-1];
 }
 
-sub keys { Data::Perl::Collection::Array->new(keys %{$_[0]}) }
+sub keys { $_[0]->_array_class->new(keys %{$_[0]}) }
 
 sub exists { CORE::exists $_[0]->{$_[1]} }
 
@@ -43,9 +44,9 @@ sub defined { CORE::defined $_[0]->{$_[1]} }
 
 sub values { CORE::values %{$_[0]} }
 
-sub kv { Data::Perl::Collection::Array->new(CORE::map { [ $_, $_[0]->{$_} ] } CORE::keys %{$_[0]}) }
+sub kv { $_[0]->_array_class->new(CORE::map { [ $_, $_[0]->{$_} ] } CORE::keys %{$_[0]}) }
 
-sub elements { Data::Perl::Collection::Array->new(CORE::map { $_, $_[0]->{$_} } CORE::keys %{$_[0]}) }
+sub elements { $_[0]->_array_class->new(CORE::map { $_, $_[0]->{$_} } CORE::keys %{$_[0]}) }
 
 sub clear { ref($_[0])->new(%{$_[0]} = ()) }
 
@@ -83,7 +84,8 @@ __END__
 =head1 DESCRIPTION
 
 This class provides a wrapper and methods for interacting with a hash.
-All methods that return a list do so via a Data::Perl::Collection::Array object.
+All methods that return a list do so via a Data::Perl::Collection::Array
+object.
 
 =head1 PROVIDED METHODS
 
@@ -192,6 +194,13 @@ This method returns a shallow clone of the hash reference.  The return value
 is a reference to a new hash with the same keys and values.  It is I<shallow>
 because any values that were references in the original will be the I<same>
 references in the clone.
+
+=item B<_array_class>
+
+The name of the class which returned lists are instances of; i.e.
+C<< Data::Perl::Collection::Array >>.
+
+Subclasses of this class can override this method.
 
 =back
 
