@@ -1,6 +1,11 @@
 {{$NEXT}}
+  - adds missed changelog entries for 0.001004 release.
 
 0.001004  2013-02-06 18:17:44 EST5EDT
+  - method chaining introduced as default functionality with Array and Hash
+    collection classes. For old behavior, Collection::Hash::AutoFlatten and
+    Collection::Array::AutoFlatten subclasses are provided.
+  - bugfixes and test suite work
 
 0.001003  2013-01-25 20:26:52 America/Toronto
   - added other missing dependencies.
