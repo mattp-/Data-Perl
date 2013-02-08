@@ -2,24 +2,30 @@ package Data::Perl::Collection::Array::AutoFlatten;
 
 # ABSTRACT: Like Collection::Array, but flattened.
 
+use Scalar::Util qw/blessed/;
+
 use parent qw/Data::Perl::Collection::Array/;
 
 use strictures 1;
 
-sub map { shift->SUPER::map(@_)->flatten }
+# promote $self to __PACKAGE__ if it is a builtin
+sub _bless { blessed($_[0]) ? $_[0] : bless($_[0], __PACKAGE__) }
 
-sub grep { shift->SUPER::grep(@_)->flatten }
+sub map { _bless(shift)->SUPER::map(@_)->flatten }
 
-sub sort { shift->SUPER::sort(@_)->flatten }
+sub grep { _bless(shift)->SUPER::grep(@_)->flatten }
 
-sub reverse { shift->SUPER::reverse(@_)->flatten }
+sub sort { _bless(shift)->SUPER::sort(@_)->flatten }
 
-sub sort_in_place { shift->SUPER::sort_in_place(@_)->flatten }
+sub reverse { _bless(shift)->SUPER::reverse(@_)->flatten }
+
+sub sort_in_place { _bless(shift)->SUPER::sort_in_place(@_)->flatten }
 
 sub splice {
-  my $self = shift;
+  my $self = _bless(shift);
   if (wantarray) {
-    my ($result) = $self->SUPER::splice(@_); $result->flatten;
+    my ($result) = $self->SUPER::splice(@_);
+    $result->flatten;
   }
   else {
     $self->SUPER::splice(@_);
@@ -27,9 +33,9 @@ sub splice {
 
 }
 
-sub shuffle { shift->SUPER::shuffle(@_)->flatten }
+sub shuffle { _bless(shift)->SUPER::shuffle(@_)->flatten }
 
-sub uniq { shift->SUPER::uniq(@_)->flatten }
+sub uniq { _bless(shift)->SUPER::uniq(@_)->flatten }
 
 1;
 
