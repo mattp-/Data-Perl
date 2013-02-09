@@ -70,37 +70,38 @@ sub shallow_clone { blessed($_[0]) ? bless([@{$_[0]}], ref $_[0]) : [@{$_[0]}] }
 #  my ($self) = @_;
 #  qw/map grep member_count sort reverse print any all one none join/;
 #}
-# promote $self to __PACKAGE__ if it is a builtin, pass along rest of @_
-sub _munge { (blessed($_[0]) ? $_[0] : bless($_[0], __PACKAGE__)), @_[1..$#_] }
-sub _bless { blessed($_[0]) ? $_[0] : bless($_[0], __PACKAGE__) }
 
 
 sub map {
   my ($self, $cb) = @_;
-  $self = _bless($self);
 
-  ref($self)->new(CORE::map { $cb->($_) } $self->elements);
+  my @res = CORE::map { $cb->($_) } @$self;
+
+  blessed($self) ? blessed($self)->new(@res) : @res;
 }
 
 sub grep {
   my ($self, $cb) = @_;
-  $self = _bless($self);
 
-  ref($self)->new(CORE::grep { $cb->($_) } $self->elements);
+  my @res = CORE::grep { $cb->($_) } @$self;
+
+  blessed($self) ? blessed($self)->new(@res) : @res;
 }
 
 sub sort {
   my ($self, $cb) = @_;
-  $self = _bless($self);
 
-  ref($self)->new($cb ? CORE::sort { $cb->($a, $b) } $self->elements : CORE::sort $self->elements);
+  my @res = $cb ? CORE::sort { $cb->($a, $b) } @$self : CORE::sort @$self;
+
+  blessed($self) ? blessed($self)->new(@res) : @res;
 }
 
 sub reverse {
   my ($self) = @_;
-  $self = _bless($self);
 
-  ref($self)->new(CORE::reverse $self->elements);
+  my @res = CORE::reverse @$self;
+
+  blessed($self) ? blessed($self)->new(@res) : @res;
 }
 
 sub sort_in_place {
@@ -110,46 +111,48 @@ sub sort_in_place {
 
 sub splice {
   my ($self) = @_;
-  $self = _bless($self);
-  my @splice = CORE::splice @{$_[0]}, $_[1], $_[2], @_[3..$#_];
+
+  my @res = CORE::splice @{$_[0]}, $_[1], $_[2], @_[3..$#_];
+
 
   if (wantarray) {
-    ref($self)->new(@splice);
+    blessed($self) ? blessed($self)->new(@res) : @res;
   }
   else {
-    $splice[-1];
+    $res[-1];
   }
 }
 
 sub shuffle {
   my ($self) = @_;
-  $self = _bless($self);
 
-  ref($self)->new(List::Util::shuffle($self->elements));
+  my @res = List::Util::shuffle(@$self);
+
+  blessed($self) ? blessed($self)->new(@res) : @res;
 }
 
 sub uniq {
   my ($self) = @_;
-  $self = _bless($self);
 
-  ref($self)->new(List::MoreUtils::uniq($self->elements));
+  my @res = List::MoreUtils::uniq(@$self);
+
+  blessed($self) ? blessed($self)->new(@res) : @res;
 }
 
 sub delete {
   my ($self, $idx) = @_;
-  use DDP; p @_;
-  $self = _bless($self);
 
-  # call these as class methods. we want the splice to occur on $self, not a new() clone
-  $self->splice($idx, 1);
+  my ($res) = CORE::splice(@$self, $idx, 1);
+
+  $res;
 }
 
 sub insert {
   my ($self, $idx, $el) = @_;
-  $self = _bless($self);
 
-  # call these as class methods. we want the splice to occur on $self, not a new() clone
-  $self->splice($idx, 0, $el);
+  my ($res) = CORE::splice(@$self, $idx, 0, $el);
+
+  $res;
 }
 
 sub flatten {
@@ -158,9 +161,8 @@ sub flatten {
 
 sub flatten_deep {
   my ($self, $depth) = @_;
-  $self = _bless($self);
 
-  _flatten_deep($self->elements, $depth);
+  _flatten_deep(@$self, $depth);
 }
 
 sub _flatten_deep {
@@ -177,16 +179,14 @@ sub _flatten_deep {
 
 sub join {
   my ($self, $with) = @_;
-  $self = _bless($self);
 
-  CORE::join((defined $with ? $with : ','), $self->elements);
+  CORE::join((defined $with ? $with : ','), @$self);
 }
 
 sub print {
   my ($self, $fh, $arg) = @_;
-  $self = _bless($self);
 
-  print { $fh ||= *STDOUT } $self->join($arg);
+  print { $fh || *STDOUT } CORE::join((defined $arg ? $arg : ','), @$self);
 }
 
 1;
