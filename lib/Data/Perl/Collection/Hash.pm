@@ -5,14 +5,28 @@ package Data::Perl::Collection::Hash;
 use strictures 1;
 
 use Scalar::Util qw/blessed/;
-use Data::Perl::Collection::Array;
-use constant _array_class => 'Data::Perl::Collection::Array';
+use Module::Runtime qw/use_module/;
 
 sub new { my $cl = shift; bless({ @_ }, $cl) }
 
+sub _array_class { 'Data::Perl::Collection::Array' }
+
 sub get {
   my $self = shift;
-  @_ > 1 ? $self->_array_class->new(@{$self}{@_}) : $self->{$_[0]}
+
+  if (@_ > 1) {
+    my @res = @{$self}{@_};
+
+    if (wantarray) {
+      blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
+    }
+    else {
+      $res[-1];
+    }
+  }
+  else {
+    $self->{$_[0]};
+  }
 }
 
 sub set {
@@ -23,20 +37,33 @@ sub set {
   @{$self}{@_[@keys_idx]} = @_[@values_idx];
 
   if (wantarray) {
-    return $self->_array_class->new(@{$self}{@_[@keys_idx]});
+    my @res = @{$self}{@_[@keys_idx]};
+
+    blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
   }
   else {
-    return $self->{$_[$keys_idx[0]]};
+    $self->{$_[$keys_idx[0]]};
   }
 }
 
 sub delete {
   my $self = shift;
-  my @deleted = CORE::delete @{$self}{@_};
-  wantarray ? $self->_array_class->new(@deleted) : $deleted[-1];
+  my @res = CORE::delete @{$self}{@_};
+  if (wantarray) {
+    blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
+  }
+  else {
+    $res[-1];
+  }
 }
 
-sub keys { $_[0]->_array_class->new(keys %{$_[0]}) }
+sub keys {
+  my ($self) = @_;
+
+  my @res = keys %{$self};
+
+  blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
+}
 
 sub exists { CORE::exists $_[0]->{$_[1]} }
 
@@ -44,11 +71,23 @@ sub defined { CORE::defined $_[0]->{$_[1]} }
 
 sub values { CORE::values %{$_[0]} }
 
-sub kv { $_[0]->_array_class->new(CORE::map { [ $_, $_[0]->{$_} ] } CORE::keys %{$_[0]}) }
+sub kv {
+  my ($self) = @_;
 
-sub elements { $_[0]->_array_class->new(CORE::map { $_, $_[0]->{$_} } CORE::keys %{$_[0]}) }
+  my @res = CORE::map { [ $_, $self->{$_} ] } CORE::keys %{$self};
 
-sub clear { ref($_[0])->new(%{$_[0]} = ()) }
+  blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
+}
+
+sub elements {
+  my ($self) = @_;
+
+  my @res = CORE::map { $_, $self->{$_} } CORE::keys %{$self};
+
+  blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
+}
+
+sub clear { %{$_[0]} = () }
 
 sub count { CORE::scalar CORE::keys %{$_[0]} }
 
