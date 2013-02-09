@@ -1,11 +1,9 @@
 use Test::More;
-use Data::Perl::Collection::Hash::AutoFlatten;
+use Data::Perl;
 
 use strict;
 
 use Scalar::Util qw/refaddr/;
-
-sub hash { Data::Perl::Collection::Hash::AutoFlatten->new(@_) }
 
 # thanks to Mojo::Collection for skeleton test
 is ref(hash('a',1,'b',2)), 'Data::Perl::Collection::Hash::AutoFlatten', 'constructor shortcut works';
