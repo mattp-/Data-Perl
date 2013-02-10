@@ -6,7 +6,7 @@ use strict;
 use Scalar::Util qw/refaddr/;
 
 # thanks to Mojo::Collection for skeleton test
-is ref(hash('a',1,'b',2)), 'Data::Perl::Collection::Hash::AutoFlatten', 'constructor shortcut works';
+is ref(hash('a',1,'b',2)), 'Data::Perl::Collection::Hash', 'constructor shortcut works';
 
 # hash
 is hash('a', 1, 'b', 2)->{'b'}, 2, 'right result';
@@ -23,29 +23,26 @@ $h = hash(b=>3);
 $h->set(d=>5);
 is_deeply $h, {d=>5,b=>3}, 'set right result';
 
-my @results = $h->set(d=>5, b => 3, e => 6);
-is_deeply \@results, [5,3,6], 'set list context works';
+my ($results) = $h->set(d=>5, b => 3, e => 6);
+is_deeply $results, [5,3,6], 'set list context works';
 # get
 is hash(a => 1, b => 2)->get('b'), 2, 'get right result';
-is_deeply [hash(a => 1, b => 2)->get(qw/a b c/)], [1, 2, undef ], 'get many right result';
+is_deeply [hash(a => 1, b => 2)->get(qw/a b c/)->all], [1, 2, undef ], 'get many right result';
 
 # delete
 $h = hash(qw/b 3 a 1 c 2 d 3 e 4 y 5 u 7/);
-is $h->delete(qw/b/), 3, 'delete returned right result';
+is_deeply $h->delete(qw/b/)->all, 3, 'delete returned right result';
 is_deeply $h, {qw/a 1 c 2 d 3 e 4 y 5 u 7/}, 'delete right result';
 
-is $h->delete(qw/4444/), undef, 'delete returned right result';
+is_deeply [$h->delete(qw/4444/)->all], [undef], 'delete returned right result';
 
-@results = $h->delete(qw/a c d e y u/);
-is_deeply [@results], [qw/1 2 3 4 5 7/], 'delete right result';
+($results) = $h->delete(qw/a c d e y u/);
+is_deeply $results, [qw/1 2 3 4 5 7/], 'delete right result';
 is_deeply $h, {}, 'delete right result';
-$h = Data::Perl::Collection::Hash->new(a=>1, b =>2);
-my $result = $h->delete('a');
-is $result, 1, 'scalar context delete works';
 
 # keys
 $h = hash(a=>1,b=>2,c=>3);
-is_deeply [sort $h->keys], [qw/a b c/], 'keys works';
+is_deeply [sort $h->keys->all], [qw/a b c/], 'keys works';
 
 # exists
 ok $h->exists('a'), 'exists ok';
@@ -60,13 +57,13 @@ ok !$h->defined('x'), 'defined not ok on undef';
 
 # values
 $h = hash(a=>1,b=>2);
-is_deeply [sort $h->values], [1,2], 'values ok';
+is_deeply [sort $h->values->all], [1,2], 'values ok';
 
 # kv
-is_deeply [$h->kv], [[qw/a 1/], [qw/b 2/]], 'kv works';
+is_deeply [$h->kv->all], [[qw/a 1/], [qw/b 2/]], 'kv works';
 
 # elements
-is_deeply [$h->elements], [ qw/a 1 b 2/], 'elements works';
+is_deeply [$h->all], [ qw/a 1 b 2/], 'all elements works';
 
 #  clear
 $h = hash(a=>1,b=>2);
@@ -95,7 +92,7 @@ is $h->accessor(), '', 'no arg accessor get returning undef works';
 # shallow_clone
 $h = hash(a=>1,b=>2);
 my $foo = $h->shallow_clone;
-is_deeply [$h->kv], [ [qw/a 1/], [qw/b 2/]], 'shallow clone is a clone';
+is_deeply [$h->kv->all], [ [qw/a 1/], [qw/b 2/]], 'shallow clone is a clone';
 isnt refaddr($h), refaddr($foo), 'refaddr doesnt match on clone';
 
 # shallow_clone as a class method

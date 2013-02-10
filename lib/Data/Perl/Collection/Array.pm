@@ -4,6 +4,7 @@ package Data::Perl::Collection::Array;
 
 use strictures 1;
 
+
 use List::Util;
 use List::MoreUtils;
 use Scalar::Util qw/blessed/;
@@ -19,7 +20,13 @@ sub count { CORE::scalar @{$_[0]} }
 
 sub is_empty { CORE::scalar @{$_[0]} ? 0 : 1 }
 
-sub elements { @{$_[0]} }
+{
+  no warnings 'once';
+  sub all { @{$_[0]} }
+
+  *elements = *all;
+  *flatten = *all;
+}
 
 sub get { $_[0]->[ $_[1] ] }
 
@@ -114,13 +121,7 @@ sub splice {
 
   my @res = CORE::splice @{$_[0]}, $_[1], $_[2], @_[3..$#_];
 
-
-  if (wantarray) {
-    blessed($self) ? blessed($self)->new(@res) : @res;
-  }
-  else {
-    $res[-1];
-  }
+  blessed($self) ? blessed($self)->new(@res) : @res;
 }
 
 sub shuffle {
@@ -153,10 +154,6 @@ sub insert {
   my ($res) = CORE::splice(@$self, $idx, 0, $el);
 
   $res;
-}
-
-sub flatten {
-    @{$_[0]}
 }
 
 sub flatten_deep {

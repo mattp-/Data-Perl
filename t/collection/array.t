@@ -30,14 +30,14 @@ is_deeply [@$collection], [1, 2, 3, 4, 5], 'right result';
 =begin
 # each
 $collection = array(3, 2, 1);
-is_deeply [$collection->each], [3, 2, 1], 'right elements';
+is_deeply [$collection->each], [3, 2, 1], 'right all';
 $collection = array([3], [2], [1]);
 my @results;
 $collection->each(sub { push @results, $_->[0] });
-is_deeply \@results, [3, 2, 1], 'right elements';
+is_deeply \@results, [3, 2, 1], 'right all';
 @results = ();
 $collection->each(sub { push @results, shift->[0], shift });
-is_deeply \@results, [3, 1, 2, 2, 1, 3], 'right elements';
+is_deeply \@results, [3, 1, 2, 2, 1, 3], 'right all';
 =cut
 
 #count/is_empty
@@ -46,9 +46,9 @@ is array(1,2,3)->count, 3, 'count correct.';
 is array()->is_empty, 1, 'is_empty correct.';
 is array(1,2,3)->is_empty, 0, 'is_empty correct.';
 
-# elements
-is_deeply [array()->elements], [], 'elements correct.';
-is_deeply [array(1, 2, 3)->elements], [1,2,3], 'elements correct.';
+# all
+is_deeply [array()->all], [], 'all correct.';
+is_deeply [array(1, 2, 3)->all], [1,2,3], 'all correct.';
 
 # get
 is array()->get(0), undef, 'get correct';
@@ -65,26 +65,26 @@ is array(1,2)->pop, 2, 'pop correct';
 
 # push
 my $ar = array(2); $ar->push(1);
-is_deeply [$ar->elements], [2,1], 'push works';
+is_deeply [$ar->all], [2,1], 'push works';
 
 # shift
 $ar = array(2,3);
 is $ar->shift(), 2, 'shift works';
-is_deeply [$ar->elements], [3], 'shift works';
+is_deeply [$ar->all], [3], 'shift works';
 
 # unshift
 $ar = array(3);
 $ar->unshift(2);
-is_deeply [$ar->elements], [2,3], 'unshift works';
+is_deeply [$ar->all], [2,3], 'unshift works';
 
 # splice
 $ar = array(1);
 $ar->splice(0,1,2);
-is_deeply [$ar->elements], [2], 'splice works';
+is_deeply [$ar->all], [2], 'splice works';
 
 $ar = array(9,8,7,6);
-my @b = $ar->splice(0,2,2, 3, 4);
-is_deeply [@b], [9,8], 'splice autoflatten works';
+my ($b) = $ar->splice(0,2,2, 3, 4);
+is_deeply [$b->all], [9,8], 'splice autoflatten works';
 
 # first/first_index
 $collection = array(5, 4, [3, 2], 1);
@@ -103,22 +103,22 @@ is $collection->first_index(sub { defined $_ }), -1, 'no result';
 
 # grep
 $collection = array(1, 2, 3, 4, 5, 6, 7, 8, 9);
-is_deeply [$collection->grep(sub {/[6-9]/})], [6, 7, 8, 9],
-  'right elements';
-is_deeply [$collection->grep(sub { $_ > 5 })], [6, 7, 8, 9],
-  'right elements';
-is_deeply [$collection->grep(sub { $_ < 5 })], [1, 2, 3, 4],
-  'right elements';
-is_deeply [$collection->grep(sub { $_ == 5 })], [5], 'right elements';
-is_deeply [$collection->grep(sub { $_ < 1 })], [], 'no elements';
-is_deeply [$collection->grep(sub { $_ > 9 })], [], 'no elements';
+is_deeply [$collection->grep(sub {/[6-9]/})->all], [6, 7, 8, 9],
+  'right all';
+is_deeply [$collection->grep(sub { $_ > 5 })->all], [6, 7, 8, 9],
+  'right all';
+is_deeply [$collection->grep(sub { $_ < 5 })->all], [1, 2, 3, 4],
+  'right all';
+is_deeply [$collection->grep(sub { $_ == 5 })->all], [5], 'right all';
+is_deeply [$collection->grep(sub { $_ < 1 })->all], [], 'no all';
+is_deeply [$collection->grep(sub { $_ > 9 })->all], [], 'no all';
 
 # map
 $collection = array(1, 2, 3);
 $collection->map(sub { $_ + 1 });
-is_deeply [@$collection], [1, 2, 3], 'right elements';
+is_deeply [@$collection], [1, 2, 3], 'right all';
 $collection->map(sub { shift() + 2 });
-is_deeply [@$collection], [1, 2, 3], 'right elements';
+is_deeply [@$collection], [1, 2, 3], 'right all';
 
 # reduce
 $collection = array(1..5);
@@ -126,38 +126,38 @@ is $collection->reduce(sub { $_[0] + $_[1] }), 15, 'reduce works';
 
 # sort
 $collection = array(5,2,4,1,3);
-is_deeply [$collection->sort(sub { $_[0] <=> $_[1] })], [1,2,3,4,5], 'sort works';
+is_deeply [$collection->sort(sub { $_[0] <=> $_[1] })->all], [1,2,3,4,5], 'sort works';
 
 # sort_in_place
 $collection = array(5,2,4,1,3);
 $collection->sort_in_place(sub { $_[1] <=> $_[0] });
-is_deeply [$collection->elements], [5,4,3,2,1], 'sort works';
+is_deeply [$collection->all], [5,4,3,2,1], 'sort works';
 $collection->sort_in_place;
-is_deeply [$collection->elements], [1,2,3,4,5], 'sort works';
+is_deeply [$collection->all], [1,2,3,4,5], 'sort works';
 
 # shuffle
 $collection = array(0 .. 10);
-my $random = [$collection->shuffle];
-is $collection->count, scalar @$random, 'same number of elements';
+my $random = [$collection->shuffle->all];
+is $collection->count, scalar @$random, 'same number of elements after shuffle';
 isnt "@$collection", "@$random", 'different order';
-is_deeply [array()->shuffle], [], 'no elements';
+is_deeply [array()->shuffle->all], [], 'no elements in shuffle';
 
 # sort
 $collection = array(2, 5, 4, 1);
-is_deeply [$collection->sort], [1, 2, 4, 5], 'right order';
-is_deeply [$collection->sort(sub { $_[1] cmp $_[0] })], [5, 4, 2, 1],
+is_deeply [$collection->sort->all], [1, 2, 4, 5], 'right order';
+is_deeply [$collection->sort(sub { $_[1] cmp $_[0] })->all], [5, 4, 2, 1],
   'right order';
 $collection = array(qw(Test perl Mojo));
-is_deeply [$collection->sort(sub { uc(shift) cmp uc(shift) })],
+is_deeply [$collection->sort(sub { uc(shift) cmp uc(shift) })->all],
   [qw(Mojo perl Test)], 'right order';
 $collection = array();
-is_deeply [$collection->sort], [], 'no elements';
-is_deeply [$collection->sort(sub { $_[1] cmp $_[0] })], [],
-  'no elements';
+is_deeply [$collection->sort->all], [], 'no all';
+is_deeply [$collection->sort(sub { $_[1] cmp $_[0] })->all], [],
+  'no all';
 
 # uniq
 $collection = array(1, 2, 3, 2, 3, 4, 5, 4);
-is_deeply [$collection->uniq], [1, 2, 3, 4, 5], 'right result';
+is_deeply [$collection->uniq->all], [1, 2, 3, 4, 5], 'right result';
 #is_deeply [$collection->uniq->reverse->uniq ], [5, 4, 3, 2, 1], 'right result';
 
 # join
@@ -190,12 +190,12 @@ is_deeply $ar, [2,2,3,undef,undef,4], 'set works';
 # delete
 $ar = array(1,2,3);
 $ar->delete(1);
-is_deeply [$ar->elements], [1,3], 'delete works';
+is_deeply [$ar->all], [1,3], 'delete works';
 
 # insert
 $ar = array(1,2,3);
 $ar->insert(1, 5);
-is_deeply [$ar->elements], [1,5,2,3], 'insert works';
+is_deeply [$ar->all], [1,5,2,3], 'insert works';
 
 # natatime
 $ar = array(1,2,3,4,5,6,7,8,9,10,11);
@@ -209,7 +209,7 @@ $ar->natatime(11, sub { is_deeply([@_], [1..11], 'passing coderef works for nata
 # shallow_clone
 $ar = array(1,2,3);
 my $foo = $ar->shallow_clone;
-is_deeply([$ar->elements], $foo, 'shallow clone is a clone');
+is_deeply([$ar->all], $foo, 'shallow clone is a clone');
 
 # shallow_clone as a class method
 $foo = Data::Perl::Collection::Array::shallow_clone([1,2,3]);
@@ -226,7 +226,7 @@ is_deeply [Data::Perl::Collection::Array->new(1, 2, [3, [4, [5] ] ], 6)->flatten
 
 # reverse
 $a = array(1,2,3,4,5);
-is_deeply([$a->reverse], [5,4,3,2,1], 'reverse works');
+is_deeply([$a->reverse->all], [5,4,3,2,1], 'reverse works');
 
 # print
 stdout_is(sub { $a->print }, '1,2,3,4,5', 'print works');

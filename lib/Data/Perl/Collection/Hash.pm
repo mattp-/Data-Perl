@@ -17,12 +17,7 @@ sub get {
   if (@_ > 1) {
     my @res = @{$self}{@_};
 
-    if (wantarray) {
-      blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
-    }
-    else {
-      $res[-1];
-    }
+    blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
   }
   else {
     $self->{$_[0]};
@@ -36,25 +31,16 @@ sub set {
 
   @{$self}{@_[@keys_idx]} = @_[@values_idx];
 
-  if (wantarray) {
-    my @res = @{$self}{@_[@keys_idx]};
+  my @res = @{$self}{@_[@keys_idx]};
 
-    blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
-  }
-  else {
-    $self->{$_[$keys_idx[0]]};
-  }
+  blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
 }
 
 sub delete {
   my $self = shift;
   my @res = CORE::delete @{$self}{@_};
-  if (wantarray) {
-    blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
-  }
-  else {
-    $res[-1];
-  }
+
+  blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
 }
 
 sub keys {
@@ -69,7 +55,13 @@ sub exists { CORE::exists $_[0]->{$_[1]} }
 
 sub defined { CORE::defined $_[0]->{$_[1]} }
 
-sub values { CORE::values %{$_[0]} }
+sub values {
+  my ($self) = @_;
+
+  my @res = CORE::values %{$_[0]};
+
+  blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
+}
 
 sub kv {
   my ($self) = @_;
@@ -79,12 +71,19 @@ sub kv {
   blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
 }
 
-sub elements {
-  my ($self) = @_;
 
-  my @res = CORE::map { $_, $self->{$_} } CORE::keys %{$self};
+{
+  no warnings 'once';
 
-  blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
+  sub all {
+    my ($self) = @_;
+
+    my @res = CORE::map { $_, $self->{$_} } CORE::keys %{$self};
+
+    @res;
+  }
+
+  *elements = *all;
 }
 
 sub clear { %{$_[0]} = () }
@@ -137,10 +136,7 @@ object initalized with keys/values and returns it.
 
 =item B<get($key, $key2, $key3...)>
 
-Returns values from the hash.
-
-In list context it returns a list of values in the hash for the given keys. In
-scalar context it returns the value for the last key specified.
+Returns a list of values in the hash for the given keys.
 
 This method requires at least one argument.
 
@@ -156,8 +152,7 @@ arguments.
 
 Removes the elements with the given keys.
 
-In list context it returns a list of values in the hash for the deleted
-keys. In scalar context it returns the value for the last key specified.
+Returns a list of values in the hash for the deleted keys.
 
 =item B<keys>
 
