@@ -1,5 +1,7 @@
 {{$NEXT}}
   - Make it easier to subclass the collection classes (@tobyink)
+  - all logic has been moved to Data::Perl::Role roles via Role::Tiny for code
+    easier reuse.
 
 0.001005  2013-02-07 10:03:48 EST5EDT
   - adds missed changelog entries for 0.001004 release.
