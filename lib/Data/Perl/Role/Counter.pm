@@ -1,8 +1,10 @@
-package Data::Perl::Counter;
+package Data::Perl::Role::Counter;
 
 # ABSTRACT: Wrapping class for a simple numeric counter.
 
 use strictures 1;
+
+use Role::Tiny;
 
 sub new { bless \(my $n = $_[1]), $_[0] }
 

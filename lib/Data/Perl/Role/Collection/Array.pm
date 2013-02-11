@@ -1,10 +1,10 @@
-package Data::Perl::Collection::Array;
+package Data::Perl::Role::Collection::Array;
 
 # ABSTRACT: Wrapping class for Perl's built in array structure.
 
 use strictures 1;
 
-
+use Role::Tiny;
 use List::Util;
 use List::MoreUtils;
 use Scalar::Util qw/blessed/;

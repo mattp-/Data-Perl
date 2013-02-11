@@ -1,11 +1,12 @@
-package Data::Perl::Collection::Hash;
+package Data::Perl::Role::Collection::Hash;
 
 # ABSTRACT: Wrapping class for Perl's built in hash structure.
 
 use strictures 1;
 
+use Role::Tiny;
 use Scalar::Util qw/blessed/;
-use Module::Runtime qw/use_module/;
+use Module::Runtime qw/use_package_optimistically/;
 
 sub new { my $cl = shift; bless({ @_ }, $cl) }
 
@@ -17,7 +18,7 @@ sub get {
   if (@_ > 1) {
     my @res = @{$self}{@_};
 
-    blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
+    blessed($self) ? use_package_optimistically($self->_array_class)->new(@res) : @res;
   }
   else {
     $self->{$_[0]};
@@ -33,14 +34,14 @@ sub set {
 
   my @res = @{$self}{@_[@keys_idx]};
 
-  blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
+  blessed($self) ? use_package_optimistically($self->_array_class)->new(@res) : @res;
 }
 
 sub delete {
   my $self = shift;
   my @res = CORE::delete @{$self}{@_};
 
-  blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
+  blessed($self) ? use_package_optimistically($self->_array_class)->new(@res) : @res;
 }
 
 sub keys {
@@ -48,7 +49,7 @@ sub keys {
 
   my @res = keys %{$self};
 
-  blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
+  blessed($self) ? use_package_optimistically($self->_array_class)->new(@res) : @res;
 }
 
 sub exists { CORE::exists $_[0]->{$_[1]} }
@@ -60,7 +61,7 @@ sub values {
 
   my @res = CORE::values %{$_[0]};
 
-  blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
+  blessed($self) ? use_package_optimistically($self->_array_class)->new(@res) : @res;
 }
 
 sub kv {
@@ -68,7 +69,7 @@ sub kv {
 
   my @res = CORE::map { [ $_, $self->{$_} ] } CORE::keys %{$self};
 
-  blessed($self) ? use_module($self->_array_class)->new(@res) : @res;
+  blessed($self) ? use_package_optimistically($self->_array_class)->new(@res) : @res;
 }
 
 

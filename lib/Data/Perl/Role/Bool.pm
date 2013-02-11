@@ -1,8 +1,10 @@
-package Data::Perl::Bool;
+package Data::Perl::Role::Bool;
 
 # ABSTRACT: Wrapping class for boolean values.
 
 use strictures 1;
+
+use Role::Tiny;
 
 sub new { my $bool = $_[1] ? 1 : 0; bless(\$bool, $_[0]) }
 

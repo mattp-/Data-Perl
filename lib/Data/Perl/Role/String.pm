@@ -1,8 +1,10 @@
-package Data::Perl::String;
+package Data::Perl::Role::String;
 
 # ABSTRACT: Wrapping class for Perl scalar strings.
 
 use strictures 1;
+
+use Role::Tiny;
 
 sub new { bless \(my $s = $_[1]), $_[0] }
 
@@ -59,7 +61,7 @@ __END__
 
 =head1 DESCRIPTION
 
-  This class provides a wrapper and methods for interacting with scalar strings.
+This class provides a wrapper and methods for interacting with scalar strings.
 
 =head1 PROVIDED METHODS
 

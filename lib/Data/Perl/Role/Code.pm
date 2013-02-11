@@ -1,8 +1,10 @@
-package Data::Perl::Code;
+package Data::Perl::Role::Code;
 
 # ABSTRACT: Wrapping class for Perl coderefs.
 
 use strictures 1;
+
+use Role::Tiny;
 
 sub new { my $cl = shift; bless $_[0], $cl }
 

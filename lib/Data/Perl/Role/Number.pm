@@ -1,8 +1,10 @@
-package Data::Perl::Number;
+package Data::Perl::Role::Number;
 
 # ABSTRACT: Wrapping class for Perl scalar numbers.
 
 use strictures 1;
+
+use Role::Tiny;
 
 sub new { bless \(my $n = $_[1]), $_[0] }
 
