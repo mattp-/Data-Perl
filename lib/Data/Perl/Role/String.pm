@@ -8,7 +8,7 @@ use Role::Tiny;
 
 sub new { bless \(my $s = $_[1]), $_[0] }
 
-sub inc { ${$_[0]}++ }
+sub inc { ++${$_[0]} }
 
 sub append { ${$_[0]} = ${$_[0]} . $_[1] }
 
@@ -21,6 +21,7 @@ sub replace {
   else {
     ${$_[0]} =~ s/$_[1]/$_[2]/;
   }
+  ${$_[0]};
 }
 
 sub match {
