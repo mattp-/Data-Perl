@@ -189,7 +189,7 @@ Returns the key/value pairs in the hash as an array of array references.
 
 This method does not accept any arguments.
 
-=item B<elements>
+=item B<elements/all>
 
 Returns the key/value pairs in the hash as a flattened list..
 

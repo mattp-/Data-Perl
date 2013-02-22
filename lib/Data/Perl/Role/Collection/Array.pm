@@ -234,7 +234,7 @@ Returns a boolean value that is true when the array has no elements.
 
 This method does not accept any arguments.
 
-=item * B<elements>
+=item * B<elements/all>
 
 Returns all of the elements of the array as an array (not an array reference).
 
