@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.002002  2013-02-25 10:00:23 EST5EDT
   - adds missing Module::Runtime dep to dist.ini/build_requires
 
 0.002001  2013-02-22 18:18:01 EST5EDT
