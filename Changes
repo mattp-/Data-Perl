@@ -1,4 +1,5 @@
 {{$NEXT}}
+  - fixes improperly specified requirements in meta, updated dist.ini to fix
 
 0.002002  2013-02-25 10:00:23 EST5EDT
   - adds missing Module::Runtime dep to dist.ini/build_requires
