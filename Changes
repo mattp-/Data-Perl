@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.002003  2013-02-25 12:21:48 EST5EDT
   - fixes improperly specified requirements in meta, updated dist.ini to fix
 
 0.002002  2013-02-25 10:00:23 EST5EDT
