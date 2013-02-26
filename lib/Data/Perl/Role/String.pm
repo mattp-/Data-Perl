@@ -68,7 +68,7 @@ This class provides a wrapper and methods for interacting with scalar strings.
 
 =over 4
 
-=item B<new($value)>
+=item * B<new($value)>
 
 Constructs a new Data::Perl::String object, optionally initialized to $value if
 passed in, and returns it.
