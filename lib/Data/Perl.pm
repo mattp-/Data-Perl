@@ -52,7 +52,7 @@ __END__
   $hash->keys; # ('a', 'b');
 
   my $number = number(5);
-
+  
   $number->add(10); # 15
 
   my $string = string("foo\n");
@@ -96,12 +96,11 @@ Data::Perl is a container class for the following classes:
 
 =back
 
-=head1 HERE BE DRAGONS
+=head1 ALPHA API
 
 The API provided by these modules is as of now considered alpha and undecided.
-Although it is safe to assume the api mirroring Moose native traits will not be
-changed/removed, If you are writing code that you will not touch again for
-years, do not use this till this warning is removed.
+The API B<WILL> change.  If you are writing code that you will not touch again
+for years, do not use this until this warning is removed.
 
 =head1 PROVIDED FUNCTIONS
 

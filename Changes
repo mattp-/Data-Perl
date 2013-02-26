@@ -1,4 +1,6 @@
 {{$NEXT}}
+  - modification to API alpha unstability warning. Removes guarantee on Moose
+    native trait compatibility.
 
 0.002003  2013-02-25 12:21:48 EST5EDT
   - fixes improperly specified requirements in meta, updated dist.ini to fix
