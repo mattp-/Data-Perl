@@ -52,7 +52,7 @@ __END__
   $hash->keys; # ('a', 'b');
 
   my $number = number(5);
-  
+
   $number->add(10); # 15
 
   my $string = string("foo\n");
