@@ -4,7 +4,7 @@ Data::Perl - Base classes wrapping fundamental Perl data types.
 
 # VERSION
 
-version 0.002003
+version 0.002005
 
 # SYNOPSIS
 
@@ -55,12 +55,11 @@ Data::Perl is a container class for the following classes:
 - [Data::Perl::Bool](http://search.cpan.org/perldoc?Data::Perl::Bool)
 - [Data::Perl::Code](http://search.cpan.org/perldoc?Data::Perl::Code)
 
-# HERE BE DRAGONS
+# ALPHA API
 
 The API provided by these modules is as of now considered alpha and undecided.
-Although it is safe to assume the api mirroring Moose native traits will not be
-changed/removed, If you are writing code that you will not touch again for
-years, do not use this till this warning is removed.
+The API __WILL__ change.  If you are writing code that you will not touch again
+for years, do not use this until this warning is removed.
 
 # PROVIDED FUNCTIONS
 
@@ -68,31 +67,31 @@ Data::Perl exports helper constructor functions to interface with the above clas
 
 - __hash(key, value, ...)__
 
-Returns a Data::Perl::Collection::Hash object initialized with the optionally passed in key/value args.
+    Returns a Data::Perl::Collection::Hash object initialized with the optionally passed in key/value args.
 
 - __array(@args)__
 
-Returns a Data::Perl::Collection::Array object initialized with the optionally passed in values.
+    Returns a Data::Perl::Collection::Array object initialized with the optionally passed in values.
 
 - __string($arg)__
 
-Returns a Data::Perl::String object initialized with the optionally passed in scalar arg.
+    Returns a Data::Perl::String object initialized with the optionally passed in scalar arg.
 
 - __number($arg)__
 
-Returns a Data::Perl::Number object initialized with the optionally passed in scalar arg.
+    Returns a Data::Perl::Number object initialized with the optionally passed in scalar arg.
 
 - __counter($arg)__
 
-Returns a Data::Perl::Counter object initialized with the optionally passed in scalar arg.
+    Returns a Data::Perl::Counter object initialized with the optionally passed in scalar arg.
 
 - __bool($arg)__
 
-Returns a Data::Perl::Bool object initialized with the truth value of the passed in scalar arg.
+    Returns a Data::Perl::Bool object initialized with the truth value of the passed in scalar arg.
 
 - __code($arg)__
 
-Returns a Data::Perl::Code object initialized with the optionally passed in scalar coderef as an arg.
+    Returns a Data::Perl::Code object initialized with the optionally passed in scalar coderef as an arg.
 
 # THANKS
 
