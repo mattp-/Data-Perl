@@ -1,4 +1,5 @@
 use Test::More;
+use Test::Deep qw/cmp_bag/;
 use Data::Perl;
 
 use strict;
@@ -60,7 +61,7 @@ $h = hash(a=>1,b=>2);
 is_deeply [sort $h->values->all], [1,2], 'values ok';
 
 # kv
-is_deeply [$h->kv->all], [[qw/a 1/], [qw/b 2/]], 'kv works';
+cmp_bag [$h->kv->all], [[qw/a 1/], [qw/b 2/]], 'kv works';
 
 # elements
 is_deeply [$h->all], [ qw/a 1 b 2/], 'all elements works';
@@ -92,7 +93,7 @@ is $h->accessor(), '', 'no arg accessor get returning undef works';
 # shallow_clone
 $h = hash(a=>1,b=>2);
 my $foo = $h->shallow_clone;
-is_deeply [$h->kv->all], [ [qw/a 1/], [qw/b 2/]], 'shallow clone is a clone';
+cmp_bag [$h->kv->all], [[qw/a 1/], [qw/b 2/]], 'shallow clone is a clone';
 isnt refaddr($h), refaddr($foo), 'refaddr doesnt match on clone';
 
 # shallow_clone as a class method

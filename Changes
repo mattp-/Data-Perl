@@ -1,4 +1,5 @@
 {{$NEXT}}
+  - fixes hash-ordering dependency test failure/bug on new (5.17+) perls
 
 0.002005  2013-03-01 22:01:14 America/Toronto
   - modification to API alpha unstability warning. Removes guarantee on Moose
