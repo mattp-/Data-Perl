@@ -64,7 +64,7 @@ is_deeply [sort $h->values->all], [1,2], 'values ok';
 cmp_bag [$h->kv->all], [[qw/a 1/], [qw/b 2/]], 'kv works';
 
 # elements
-is_deeply [$h->all], [ qw/a 1 b 2/], 'all elements works';
+is_deeply [sort $h->all], [ qw/1 2 a b/], 'all elements works';
 
 #  clear
 $h = hash(a=>1,b=>2);
