@@ -51,27 +51,27 @@ the new value.
 Constructs a new Data::Perl::Collection::Number object initialized with the passed
 in value, and returns it.
 
-=item * B<add($value)>
+=item B<add($value)>
 
 Adds the current value of the attribute to C<$value>.
 
-=item * B<sub($value)>
+=item B<sub($value)>
 
 Subtracts C<$value> from the current value of the attribute.
 
-=item * B<mul($value)>
+=item B<mul($value)>
 
 Multiplies the current value of the attribute by C<$value>.
 
-=item * B<div($value)>
+=item B<div($value)>
 
 Divides the current value of the attribute by C<$value>.
 
-=item * B<mod($value)>
+=item B<mod($value)>
 
 Returns the current value of the attribute modulo C<$value>.
 
-=item * B<abs>
+=item B<abs>
 
 Sets the current value of the attribute to its absolute value.
 

@@ -38,11 +38,11 @@ This class provides a wrapper and methods for interacting with Perl coderefs.
 Constructs a new Data::Perl::Code object, initialized to $coderef as passed in,
 and returns it.
 
-=item * B<execute(@args)>
+=item B<execute(@args)>
 
 Calls the coderef with the given args.
 
-=item * B<execute_method(@args)>
+=item B<execute_method(@args)>
 
 Calls the coderef with the the instance as invocant and given args. B<This is
 currently disabled and triggers a die due to implementation details yet to be

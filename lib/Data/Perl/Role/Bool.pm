@@ -45,21 +45,21 @@ None of these methods accept arguments.
 Constructs a new Data::Perl::Collection::Bool object initialized with the passed
 in value, and returns it.
 
-=item * B<set>
+=item B<set>
 
 Sets the value to C<1> and returns C<1>.
 
-=item * B<unset>
+=item B<unset>
 
 Set the value to C<0> and returns C<0>.
 
-=item * B<toggle>
+=item B<toggle>
 
 Toggles the value. If it's true, set to false, and vice versa.
 
 Returns the new value.
 
-=item * B<not>
+=item B<not>
 
 Equivalent of 'not C<$value>'.
 

@@ -216,7 +216,7 @@ All methods that return a list do so via a Data::Perl::Collection::Array object.
 Constructs a new Data::Perl::Collection::Array object initialized with passed
 in values, and returns it.
 
-=item * B<count>
+=item B<count>
 
 Returns the number of elements in the array.
 
@@ -226,7 +226,7 @@ Returns the number of elements in the array.
 
 This method does not accept any arguments.
 
-=item * B<is_empty>
+=item B<is_empty>
 
 Returns a boolean value that is true when the array has no elements.
 
@@ -234,7 +234,7 @@ Returns a boolean value that is true when the array has no elements.
 
 This method does not accept any arguments.
 
-=item * B<elements/all>
+=item B<elements/all>
 
 Returns all of the elements of the array as an array (not an array reference).
 
@@ -243,7 +243,7 @@ Returns all of the elements of the array as an array (not an array reference).
 
 This method does not accept any arguments.
 
-=item * B<get($index)>
+=item B<get($index)>
 
 Returns an element of the array by its index. You can also use negative index
 numbers, just as with Perl's core array handling.
@@ -255,33 +255,33 @@ If the specified element does not exist, this will return C<undef>.
 
 This method accepts just one argument.
 
-=item * B<pop>
+=item B<pop>
 
 Just like Perl's builtin C<pop>.
 
 This method does not accept any arguments.
 
-=item * B<push($value1, $value2, value3 ...)>
+=item B<push($value1, $value2, value3 ...)>
 
 Just like Perl's builtin C<push>. Returns the number of elements in the new
 array.
 
 This method accepts any number of arguments.
 
-=item * B<shift>
+=item B<shift>
 
 Just like Perl's builtin C<shift>.
 
 This method does not accept any arguments.
 
-=item * B<unshift($value1, $value2, value3 ...)>
+=item B<unshift($value1, $value2, value3 ...)>
 
 Just like Perl's builtin C<unshift>. Returns the number of elements in the new
 array.
 
 This method accepts any number of arguments.
 
-=item * B<splice($offset, $length, @values)>
+=item B<splice($offset, $length, @values)>
 
 Just like Perl's builtin C<splice>. In scalar context, this returns the last
 element removed, or C<undef> if no elements were removed. In list context, this
@@ -290,7 +290,7 @@ object.
 
 This method requires at least one argument.
 
-=item * B<first( sub { ... } )>
+=item B<first( sub { ... } )>
 
 This method returns the first matching item in the array, just like
 L<List::Util>'s C<first> function. The matching is done with a subroutine
@@ -302,7 +302,7 @@ element in the array until one matches or all elements have been checked.
 
 This method requires a single argument.
 
-=item * B<first_index( sub { ... } )>
+=item B<first_index( sub { ... } )>
 
 This method returns the index of the first matching item in the array, just
 like L<List::MoreUtils>'s C<first_index> function. The matching is done with a
@@ -312,7 +312,7 @@ checked.
 
 This method requires a single argument.
 
-=item * B<grep( sub { ... } )>
+=item B<grep( sub { ... } )>
 
 This method returns every element matching a given criteria, just like Perl's
 core C<grep> function. This method requires a subroutine which implements the
@@ -323,7 +323,7 @@ matching logic. The returned list is provided as a Collection::Array object.
 
 This method requires a single argument.
 
-=item * B<map( sub { ... } )>
+=item B<map( sub { ... } )>
 
 This method transforms every element in the array and returns a new array, just
 like Perl's core C<map> function. This method requires a subroutine which
@@ -335,7 +335,7 @@ a Collection::Array object.
 
 This method requires a single argument.
 
-=item * B<reduce( sub { ... } )>
+=item B<reduce( sub { ... } )>
 
 This method turns an array into a single value, by passing a function the
 value so far and the next value in the array, just like L<List::Util>'s
@@ -347,9 +347,9 @@ to this method.
 
 This method requires a single argument.
 
-=item * B<sort>
+=item B<sort>
 
-=item * B<sort( sub { ... } )>
+=item B<sort( sub { ... } )>
 
 Returns the elements of the array in sorted order.
 
@@ -367,9 +367,9 @@ is provided as a Collection::Array object.
 
 This method accepts a single argument.
 
-=item * B<sort_in_place>
+=item B<sort_in_place>
 
-=item * B<sort_in_place( sub { ... } )>
+=item B<sort_in_place( sub { ... } )>
 
 Sorts the array I<in place>, modifying the value of the attribute.
 
@@ -380,28 +380,28 @@ as a Collection::Array object.
 
 This method accepts a single argument.
 
-=item * B<reverse>
+=item B<reverse>
 
 Returns the elements of the array in reversed order. The returned list is
 provided as a Collection::Array object.
 
 This method does not accept any arguments.
 
-=item * B<shuffle>
+=item B<shuffle>
 
 Returns the elements of the array in random order, like C<shuffle> from
 L<List::Util>. The returned list is provided as a Collection::Array object.
 
 This method does not accept any arguments.
 
-=item * B<uniq>
+=item B<uniq>
 
 Returns the array with all duplicate elements removed, like C<uniq> from
 L<List::MoreUtils>. The returned list is provided as a Collection::Array object.
 
 This method does not accept any arguments.
 
-=item * B<join($str)>
+=item B<join($str)>
 
 Joins every element of the array using the separator given as argument, just
 like Perl's core C<join> function.
@@ -411,14 +411,14 @@ like Perl's core C<join> function.
 
 This method requires a single argument.
 
-=item * B<print($handle, $str)>
+=item B<print($handle, $str)>
 
 Prints the output of join($str) to $handle. $handle defaults to STDOUT, and
 join $str defaults to join()'s default of ','.
 
   $joined = $stuff->print(*STDERR, ';'); # prints foo;bar;baz to STDERR
 
-=item * B<set($index, $value)>
+=item B<set($index, $value)>
 
 Given an index and a value, sets the specified array element's value.
 
@@ -426,7 +426,7 @@ This method returns the value at C<$index> after the set.
 
 This method requires two arguments.
 
-=item * B<delete($index)>
+=item B<delete($index)>
 
 Removes the element at the given index from the array.
 
@@ -437,7 +437,7 @@ return C<undef>.
 
 This method requires one argument.
 
-=item * B<insert($index, $value)>
+=item B<insert($index, $value)>
 
 Inserts a new element into the array at the given index.
 
@@ -446,7 +446,7 @@ dependent on splice context semantics.
 
 This method requires two arguments.
 
-=item * B<clear>
+=item B<clear>
 
 Empties the entire array, like C<@array = ()>.
 
@@ -454,9 +454,9 @@ This method does not define a return value.
 
 This method does not accept any arguments.
 
-=item * B<accessor($index)>
+=item B<accessor($index)>
 
-=item * B<accessor($index, $value)>
+=item B<accessor($index, $value)>
 
 This method provides a get/set accessor for the array, based on array indexes.
 If passed one argument, it returns the value at the specified index.  If
@@ -466,9 +466,9 @@ When called as a setter, this method returns the new value at C<$index>.
 
 This method accepts one or two arguments.
 
-=item * B<natatime($n)>
+=item B<natatime($n)>
 
-=item * B<natatime($n, $code)>
+=item B<natatime($n, $code)>
 
 This method returns an iterator which, on each call, returns C<$n> more items
 from the array, in order, like C<natatime> from L<List::MoreUtils>. A coderef
@@ -477,19 +477,19 @@ in the array.
 
 This method accepts one or two arguments.
 
-=item * B<shallow_clone>
+=item B<shallow_clone>
 
 This method returns a shallow clone of the array reference.  The return value
 is a reference to a new array with the same elements.  It is I<shallow>
 because any elements that were references in the original will be the I<same>
 references in the clone.
 
-=item * B<flatten>
+=item B<flatten>
 
 This method returns a list of elements in the array.  This method is an alias
 to the I<elements> method.
 
-=item * B<flatten_deep($level)>
+=item B<flatten_deep($level)>
 
 This method returns a flattened list of elements in the array. Will flatten
 arrays contained within the root array recursively - depth is controlled by the

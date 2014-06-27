@@ -41,31 +41,31 @@ This class provides a wrapper and methods for a simple numeric counter.
 Constructs a new Data::Perl::Collection::Counter object initialized with the passed
 in value, and returns it.
 
-=item * B<set($value)>
+=item B<set($value)>
 
 Sets the counter to the specified value and returns the new value.
 
 This method requires a single argument.
 
-=item * B<inc>
+=item B<inc>
 
-=item * B<inc($arg)>
+=item B<inc($arg)>
 
 Increases the attribute value by the amount of the argument, or by 1 if no
 argument is given. This method returns the new value.
 
 This method accepts a single argument.
 
-=item * B<dec>
+=item B<dec>
 
-=item * B<dec($arg)>
+=item B<dec($arg)>
 
 Decreases the attribute value by the amount of the argument, or by 1 if no
 argument is given. This method returns the new value.
 
 This method accepts a single argument.
 
-=item * B<reset>
+=item B<reset>
 
 Resets the value stored in this slot to its default value, and returns the new
 value.
