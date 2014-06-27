@@ -1,4 +1,5 @@
 {{$NEXT}}
+  - fixes pod test failures. thanks gregor herrmann / Debian perl team!
 
 0.002008  2014-06-25 11:37:43EDT-0400 America/Toronto
 
