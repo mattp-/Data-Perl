@@ -133,7 +133,7 @@ object.
 =item B<new($key, $value, ...)>
 
 Given an optional list of keys/values, constructs a new Data::Perl::Collection::Hash
-object initalized with keys/values and returns it.
+object initialized with keys/values and returns it.
 
 =item B<get($key, $key2, $key3...)>
 
